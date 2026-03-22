@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Blindness — A Prosopagnosia Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black: #050505;
+  --off-white: #ede8e0;
+  --red: #c9303a;
+  --red-dim: rgba(201,48,58,.15);
+  --dim: rgba(237,232,224,.4);
+  --dimmer: rgba(237,232,224,.22);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--black);
+  color: var(--off-white);
+  font-family: 'IBM Plex Mono', monospace;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── CURSOR ── */
+#cursor {
+  position: fixed; width: 8px; height: 8px;
+  background: var(--red); border-radius: 50%;
+  pointer-events: none; z-index: 99999;
+  transform: translate(-50%,-50%);
+  transition: transform .1s, width .2s, height .2s;
+  mix-blend-mode: difference;
+}
+#cursor.big { width: 44px; height: 44px; }
+
+/* ═══════════════════════════════════
+   INTRO
+═══════════════════════════════════ */
+#intro {
+  position: fixed; inset: 0; z-index: 800;
+  background: var(--black);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 2s ease;
+  padding: 2rem;
+}
+#intro.exit { opacity: 0; pointer-events: none; }
+
+/* The number — massive, dramatic */
+#intro-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(10rem, 28vw, 22rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(237,232,224,.08);
+  position: absolute;
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: .02em;
+}
+
+#intro-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  max-width: 600px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease 1s forwards;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#intro-content .stat {
+  font-size: .6rem;
+  letter-spacing: .4em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 2rem;
+  display: block;
+}
+
+#intro-content blockquote {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--off-white);
+  margin-bottom: .8rem;
+}
+
+#intro-content .attribution {
+  font-size: .58rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--dimmer);
+  margin-bottom: 3.5rem;
+  display: block;
+}
+
+#enter-btn {
+  display: inline-block;
+  padding: 1rem 3.5rem;
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  cursor: none;
+  opacity: 0;
+  animation: fadeUp .8s ease 2.6s forwards;
+  transition: background .25s, color .25s;
+  position: relative;
+  overflow: hidden;
+}
+#enter-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s ease;
+  z-index: -1;
+}
+#enter-btn:hover { color: var(--black); }
+#enter-btn:hover::after { transform: scaleX(1); }
+
+/* ═══════════════════════════════════
+   PAGE
+═══════════════════════════════════ */
+#page { opacity: 0; transition: opacity 2s ease; }
+#page.visible { opacity: 1; }
+
+/* ── NAV ── */
+#nav {
+  position: sticky; top: 0; z-index: 400;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem; height: 56px;
+  background: rgba(5,5,5,.96);
+  border-bottom: 1px solid rgba(237,232,224,.06);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem; letter-spacing: .1em;
+  color: var(--off-white);
+}
+.nav-logo em { color: var(--red); font-style: normal; }
+.nav-links { display: flex; }
+.nav-link {
+  font-size: .52rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--dimmer); padding: 0 1.3rem; height: 56px;
+  display: flex; align-items: center;
+  border-left: 1px solid rgba(237,232,224,.05);
+  cursor: none; transition: color .2s;
+  white-space: nowrap;
+}
+.nav-link:hover { color: var(--off-white); }
+.nav-link.active { color: var(--red); }
+
+/* red line progress */
+#progress {
+  position: sticky; top: 56px;
+  height: 1px; background: var(--red);
+  width: 0%; z-index: 401;
+  transition: width .06s linear;
+  opacity: .7;
+}
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+}
+
+/* LEFT — text side */
+.hero-left {
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 8rem 3rem 5rem;
+  position: relative; z-index: 2;
+}
+
+.hero-kicker {
+  font-size: .52rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1.8rem;
+}
+
+#hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(4.5rem, 10vw, 10rem);
+  line-height: .88;
+  letter-spacing: .01em;
+  color: var(--off-white);
+}
+#hero h1 .stroke {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--off-white);
+}
+
+.hero-sub {
+  margin-top: 2.5rem;
+  display: flex; align-items: flex-start; gap: 1.5rem;
+  max-width: 420px;
+}
+.hero-sub-line {
+  width: 1px; background: var(--red);
+  flex-shrink: 0; margin-top: .3rem;
+  align-self: stretch; min-height: 40px;
+}
+.hero-sub p {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(.85rem, 1.4vw, 1.05rem);
+  font-style: italic;
+  color: var(--dim);
+  line-height: 1.75;
+}
+
+.hero-scroll {
+  margin-top: 4rem;
+  font-size: .48rem; letter-spacing: .3em; text-transform: uppercase;
+  color: rgba(237,232,224,.15);
+  animation: breathe 3s ease-in-out infinite;
+}
+@keyframes breathe { 0%,100%{opacity:.15} 50%{opacity:.5} }
+
+/* RIGHT — image side with dissolve into left */
+.hero-right {
+  position: relative;
+  overflow: hidden;
+}
+
+#hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0,0,0,.05) 12%,
+    rgba(0,0,0,.3) 24%,
+    rgba(0,0,0,.65) 38%,
+    rgba(0,0,0,.9) 55%,
+    black 72%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0,0,0,.05) 12%,
+    rgba(0,0,0,.3) 24%,
+    rgba(0,0,0,.65) 38%,
+    rgba(0,0,0,.9) 55%,
+    black 72%
+  );
+}
+
+.hero-right::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, var(--black) 0%, transparent 28%);
+  pointer-events: none; z-index: 1;
+}
+
+@media (max-width: 768px) {
+  #hero { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+  .hero-right { min-height: 55vh; order: -1; }
+  #hero-img {
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  }
+  .hero-right::after { background: linear-gradient(to bottom, transparent 40%, var(--black) 100%); }
+}
+
+/* ═══════════════════════════════════
+   CROSSFADING BACKGROUND SYSTEM
+═══════════════════════════════════ */
+
+/* Fixed background layer — sits behind everything */
+#bg-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  /* Invert the images: these are light bg artworks, site is dark */
+  filter: invert(1) brightness(.45) contrast(1.1);
+}
+.bg-layer.active { opacity: 1; }
+
+/* Dark scrim over bg so text stays legible */
+#bg-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(5,5,5,.55);
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+#bg-scrim.show { opacity: 1; }
+
+/* ═══════════════════════════════════
+   CONTENT SECTIONS
+═══════════════════════════════════ */
+.section {
+  padding: 10rem 3rem;
+  border-top: 1px solid rgba(237,232,224,.06);
+  position: relative;
+  overflow: hidden;
+  /* transparent so bg shows through */
+  background: transparent;
+  z-index: 2;
+}
+.section.dark { background: rgba(3,3,3,.45); }
+
+/* section number watermark */
+.section-num {
+  position: absolute;
+  top: 3rem; right: 2.5rem;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 8rem; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(237,232,224,.04);
+  pointer-events: none; user-select: none;
+}
+
+.section-wrap {
+  max-width: 760px;
+  opacity: 0; transform: translateY(40px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.section-wrap.visible { opacity: 1; transform: none; }
+
+.s-eyebrow {
+  font-size: .52rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1.8rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.s-eyebrow::after {
+  content: ''; flex: 1; max-width: 60px;
+  height: 1px; background: var(--red); opacity: .4;
+}
+
+h2.display {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: .92; letter-spacing: .02em;
+  color: var(--off-white);
+  margin-bottom: 3rem;
+}
+h2.display em {
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--red);
+}
+
+p.prose {
+  font-size: .86rem; line-height: 1.95;
+  color: var(--dim);
+  margin-bottom: 1.2rem;
+  max-width: 640px;
+}
+p.prose strong { color: var(--off-white); font-weight: 400; }
+
+.block-quote {
+  margin: 3.5rem 0;
+  padding: 2.5rem 3rem;
+  border-left: 2px solid var(--red);
+  background: var(--red-dim);
+  max-width: 640px;
+}
+.block-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.15rem, 2.8vw, 1.6rem);
+  font-style: italic;
+  color: var(--off-white);
+  line-height: 1.5;
+  margin-bottom: .8rem;
+}
+.block-quote cite {
+  font-size: .55rem; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--dimmer);
+}
+
+/* ── SCIENCE GRID ── */
+.sci-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: rgba(237,232,224,.05);
+  max-width: 960px;
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 1s, transform 1s;
+}
+.sci-grid.visible { opacity: 1; transform: none; }
+
+.sci-card {
+  background: var(--black);
+  padding: 2.5rem 2.2rem;
+  transition: background .25s;
+  position: relative;
+}
+.dark .sci-card { background: #030303; }
+.sci-card:hover { background: #0d0d0d; }
+.sci-card .num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(237,232,224,.1);
+  margin-bottom: 1.2rem;
+  display: block;
+}
+.sci-card h3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .72rem; font-weight: 400;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--off-white);
+  margin-bottom: .9rem;
+}
+.sci-card p {
+  font-size: .76rem; line-height: 1.8;
+  color: var(--dimmer);
+}
+.sci-card .tag {
+  display: inline-block; margin-top: 1.2rem;
+  font-size: .5rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); border: 1px solid rgba(201,48,58,.3);
+  padding: .25rem .6rem;
+}
+
+/* ── COPING LIST ── */
+.cope-list { max-width: 760px; }
+.cope-item {
+  display: grid;
+  grid-template-columns: 5rem 1fr;
+  gap: 2rem;
+  padding: 3rem 0;
+  border-bottom: 1px solid rgba(237,232,224,.05);
+  opacity: 0; transform: translateX(-24px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.cope-item.visible { opacity: 1; transform: none; }
+.cope-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem; line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(237,232,224,.1);
+  padding-top: .15rem;
+}
+.cope-item h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--off-white); margin-bottom: .6rem;
+}
+.cope-item p { font-size: .82rem; line-height: 1.85; color: var(--dim); }
+
+/* ── CASES ── */
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: rgba(237,232,224,.05);
+  max-width: 920px;
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 1s, transform 1s;
+}
+.cases-grid.visible { opacity: 1; transform: none; }
+.case-card {
+  background: var(--black);
+  padding: 2.5rem 2rem;
+  transition: background .25s;
+  border-top: 2px solid transparent;
+  transition: background .25s, border-color .25s;
+}
+.case-card:hover { background: #0a0a0a; border-top-color: var(--red); }
+.case-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: .05em;
+  color: var(--off-white); margin-bottom: .2rem;
+}
+.case-role {
+  font-size: .52rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 1rem;
+}
+.case-card p { font-size: .74rem; line-height: 1.75; color: var(--dimmer); }
+
+/* ── QUIZ ── */
+#quiz-section {
+  padding: 10rem 3rem;
+  border-top: 1px solid rgba(237,232,224,.06);
+  position: relative;
+  z-index: 2;
+  background: rgba(3,3,3,.45);
+}
+#quiz-wrap {
+  max-width: 720px;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 1s, transform 1s;
+}
+#quiz-wrap.visible { opacity: 1; transform: none; }
+
+.quiz-intro {
+  font-size: .8rem; line-height: 1.85;
+  color: var(--dimmer); margin-bottom: 3rem;
+  max-width: 580px;
+}
+
+.q-block { margin-bottom: 2.5rem; }
+.q-text {
+  font-size: .82rem; line-height: 1.75;
+  color: var(--dim); margin-bottom: 1.2rem;
+}
+.q-options { display: flex; flex-direction: column; gap: 2px; }
+.q-opt {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 1rem 1.4rem;
+  background: #0c0c0c;
+  border: 1px solid transparent;
+  font-size: .74rem; letter-spacing: .03em;
+  color: var(--dimmer); cursor: none;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.q-opt:hover { border-color: rgba(237,232,224,.1); color: var(--dim); background: #111; }
+.q-opt.selected { border-color: var(--red); color: var(--off-white); background: var(--red-dim); }
+.q-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  border: 1px solid currentColor; flex-shrink: 0;
+  transition: background .2s;
+}
+.q-opt.selected .q-dot { background: var(--red); border-color: var(--red); }
+
+#quiz-submit {
+  margin-top: 3rem;
+  padding: 1rem 3rem;
+  background: transparent;
+  border: 1px solid var(--red);
+  color: var(--red);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .62rem; letter-spacing: .25em; text-transform: uppercase;
+  cursor: none; display: block;
+  transition: background .25s, color .25s;
+  position: relative; overflow: hidden;
+}
+#quiz-submit::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--red); transform: scaleX(0);
+  transform-origin: left; transition: transform .3s ease; z-index: -1;
+}
+#quiz-submit:hover { color: var(--black); }
+#quiz-submit:hover::after { transform: scaleX(1); }
+
+#quiz-result {
+  margin-top: 2.5rem; padding: 2.5rem;
+  border-left: 2px solid var(--red);
+  background: var(--red-dim); display: none;
+}
+.r-score {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 4rem; line-height: 1;
+  color: var(--red); margin-bottom: .5rem;
+}
+.r-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-style: italic;
+  color: var(--off-white); margin-bottom: 1rem;
+}
+.r-text { font-size: .78rem; line-height: 1.85; color: var(--dim); }
+.r-disclaimer {
+  margin-top: 1.5rem; padding-top: 1.2rem;
+  border-top: 1px solid rgba(237,232,224,.06);
+  font-size: .6rem; line-height: 1.7; color: rgba(237,232,224,.2);
+}
+
+/* ── CLOSING ── */
+#closing {
+  padding: 12rem 3rem 10rem;
+  border-top: 1px solid rgba(237,232,224,.06);
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 1.2s, transform 1.2s;
+  position: relative; z-index: 2;
+  background: rgba(3,3,3,.35);
+}
+#closing.visible { opacity: 1; transform: none; }
+#closing blockquote {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: .92; letter-spacing: .02em;
+  color: var(--off-white);
+  max-width: 820px; margin-bottom: 3rem;
+}
+#closing blockquote em {
+  font-style: normal; color: transparent;
+  -webkit-text-stroke: 1.5px var(--red);
+}
+#closing p {
+  font-size: .84rem; line-height: 1.95;
+  color: var(--dim); max-width: 560px;
+}
+#closing .final {
+  margin-top: 2rem; font-family: 'Playfair Display', serif;
+  font-style: italic; font-size: 1rem;
+  color: rgba(237,232,224,.18);
+}
+
+footer {
+  padding: 2rem 3rem;
+  border-top: 1px solid rgba(237,232,224,.04);
+  display: flex; align-items: center; justify-content: space-between;
+}
+footer p { font-size: .5rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(237,232,224,.15); }
+footer span { color: var(--red); }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- ═══════════ INTRO ═══════════ -->
+<div id="intro">
+  <div id="intro-number">2.5%</div>
+  <div id="intro-content">
+    <span class="stat">1 in 40 people cannot recognize faces</span>
+    <blockquote>"The face is the most important surface in the human world. For some, it means nothing at all."</blockquote>
+    <span class="attribution">Prosopagnosia — face blindness</span>
+    <button id="enter-btn">Enter the experience</button>
+  </div>
+</div>
+
+<!-- ═══════════ PAGE ═══════════ -->
+<div id="page">
+
+<!-- Fixed crossfading background -->
+<div id="bg-canvas">
+  <div class="bg-layer" id="bg1" style="background-image:url('carlotta1.webp')"></div>
+  <div class="bg-layer" id="bg2" style="background-image:url('carlotta2.webp')"></div>
+  <div class="bg-layer" id="bg3" style="background-image:url('carlotta3.webp')"></div>
+</div>
+<div id="bg-scrim"></div>
+
+  <nav id="nav">
+    <div class="nav-logo">Face <em>Blindness</em></div>
+    <div class="nav-links">
+      <div class="nav-link" data-target="s-what">What It Is</div>
+      <div class="nav-link" data-target="s-condition">The Condition</div>
+      <div class="nav-link" data-target="s-science">Neuroscience</div>
+      <div class="nav-link" data-target="s-living">Living With It</div>
+      <div class="nav-link" data-target="s-cases">Known Cases</div>
+      <div class="nav-link" data-target="quiz-section">Self-Test</div>
+    </div>
+  </nav>
+  <div id="progress"></div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <p class="hero-kicker">Sensation &amp; Perception &mdash; Prosopagnosia</p>
+      <h1>
+        FACE<br>
+        <span class="stroke">BLINDNESS</span>
+      </h1>
+      <div class="hero-sub">
+        <div class="hero-sub-line"></div>
+        <p>A neurological condition where the brain loses its ability to recognize faces &mdash; not because of damaged eyes, but because of how perception itself is organized.</p>
+      </div>
+      <p class="hero-scroll">&darr; scroll to explore</p>
+    </div>
+    <div class="hero-right">
+      <img id="hero-img" src="hero-image.png" alt="Fragmented face depicting prosopagnosia">
+    </div>
+  </section>
+
+  <!-- 01 WHAT IT IS -->
+  <section class="section" id="s-what">
+    <div class="section-num">01</div>
+    <div class="section-wrap">
+      <p class="s-eyebrow">01 — What It Is</p>
+      <h2 class="display">EVERY FACE.<br><em>A STRANGER.</em></h2>
+      <p class="prose">Imagine walking into a room full of people you love — your friends, your family, your colleagues — and feeling nothing. No click of recognition. No name surfacing from memory. Just a face, completely stripped of meaning.</p>
+      <p class="prose">This is the daily reality of <strong>prosopagnosia</strong>. Not blindness. Not memory loss. Something far more specific: the inability to translate a face into an identity. The eyes work perfectly. The brain processes every feature. But the system that binds those features into a person you <em>know</em> — that system is broken.</p>
+      <div class="block-quote">
+        <p>"I can describe a face perfectly. I know it has eyes, a nose, a mouth. But that information just doesn't add up to a person I recognize."</p>
+        <cite>— Common description from individuals with prosopagnosia</cite>
+      </div>
+      <p class="prose">The world looks completely normal. Objects, places, words — all recognized without effort. It is only faces — the most socially critical visual stimulus in human existence — that fail to resolve into meaning.</p>
+    </div>
+  </section>
+
+  <!-- 02 THE CONDITION -->
+  <section class="section dark" id="s-condition">
+    <div class="section-num">02</div>
+    <div class="section-wrap">
+      <p class="s-eyebrow">02 — The Condition</p>
+      <h2 class="display">THE<br>SCIENCE</h2>
+      <p class="prose">Prosopagnosia (from Greek: <em>prosopon</em> = face, <em>agnosia</em> = not knowing) is the inability to recognize faces — including, in severe cases, one's own reflection. It is not a problem of vision, memory, or intelligence. It is a problem of <strong>perception</strong>.</p>
+      <p class="prose">There are two distinct forms. <strong>Acquired prosopagnosia</strong> results from brain injury — typically damage to the right fusiform gyrus — and can develop suddenly after a stroke or trauma. <strong>Developmental prosopagnosia</strong> appears without any identifiable brain damage, often runs in families, and affects an estimated 2–2.5% of the population. Many people live their entire lives unaware they have it.</p>
+      <p class="prose">Normal face recognition depends on something called <strong>holistic processing</strong>. The brain doesn't analyze a face feature by feature — it encodes the spatial relationships between features as a single unified whole, in one pass. Prosopagnosia disrupts this integration entirely, and in doing so reveals something profound: that human perception is deeply <strong>modular</strong>. Specialized systems can fail independently, leaving all other cognition completely intact.</p>
+    </div>
+  </section>
+
+  <!-- 03 NEUROSCIENCE -->
+  <section class="section" id="s-science">
+    <div class="section-num">03</div>
+    <div class="section-wrap" style="max-width:960px;">
+      <p class="s-eyebrow">03 — The Neuroscience</p>
+      <h2 class="display">INSIDE<br>THE BRAIN</h2>
+    </div>
+    <div class="sci-grid">
+      <div class="sci-card"><span class="num">01</span><h3>Fusiform Face Area</h3><p>Located in the fusiform gyrus of the temporal lobe, the FFA responds preferentially to faces over all other visual stimuli. Damage or atypical development here is the primary neural basis of prosopagnosia.</p><span class="tag">Right hemisphere dominant</span></div>
+      <div class="sci-card"><span class="num">02</span><h3>Occipital Face Area</h3><p>The OFA detects that something is a face before passing information forward to the FFA. It handles the earliest stage of face processing — structural encoding — before identity is even considered.</p><span class="tag">Early visual processing</span></div>
+      <div class="sci-card"><span class="num">03</span><h3>The N170 Response</h3><p>In neurotypical people, faces produce a distinct EEG signal 170 milliseconds after viewing. In prosopagnosia, this marker is delayed, reduced, or absent — showing the deficit occurs within the first fraction of a second.</p><span class="tag">EEG biomarker</span></div>
+      <div class="sci-card"><span class="num">04</span><h3>Holistic Processing</h3><p>Faces are perceived as unified wholes, not assembled part by part. The "composite face effect" — where aligning the top half of one face with the bottom of another creates a new identity — demonstrates this. Prosopagnosia shatters this unification.</p><span class="tag">Gestalt perception</span></div>
+      <div class="sci-card"><span class="num">05</span><h3>Compensatory Pathways</h3><p>The brain is adaptive. People with prosopagnosia develop powerful alternative strategies — voice, gait, hairstyle, clothing, context — rerouting social recognition through entirely different neural channels.</p><span class="tag">Neural plasticity</span></div>
+      <div class="sci-card"><span class="num">06</span><h3>Heritability</h3><p>Developmental prosopagnosia has strong genetic components. First-degree relatives of affected individuals show significantly elevated rates, suggesting that face-processing architecture is partly inherited.</p><span class="tag">~2.5% prevalence</span></div>
+    </div>
+  </section>
+
+  <!-- 04 LIVING WITH IT -->
+  <section class="section dark" id="s-living">
+    <div class="section-num">04</div>
+    <div class="section-wrap">
+      <p class="s-eyebrow">04 — Living With It</p>
+      <h2 class="display">HOW THEY<br><em>COPE</em></h2>
+    </div>
+    <div class="cope-list">
+      <div class="cope-item"><span class="cope-n">01</span><div><h4>Voice as Identity</h4><p>Voice becomes the primary identifier. Many people with prosopagnosia report recognizing voices with unusual precision — the auditory system compensating where the visual system fails. Phone calls can genuinely be easier than in-person meetings.</p></div></div>
+      <div class="cope-item"><span class="cope-n">02</span><div><h4>Hair, Gait & Anchors</h4><p>A distinctive haircut, an unusual walk, a scar, a signature piece of clothing — these become the actual tools of recognition. Changing your hair can make you, briefly, a complete stranger.</p></div></div>
+      <div class="cope-item"><span class="cope-n">03</span><div><h4>Context Dependency</h4><p>Knowing who should be in a place is everything. Running into your doctor at a grocery store — out of context, unexpected — causes recognition to fail entirely, for someone you've seen dozens of times.</p></div></div>
+      <div class="cope-item"><span class="cope-n">04</span><div><h4>The Social Performance</h4><p>Many people learn to smile warmly at anyone who approaches with apparent familiarity — performing recognition to avoid offense. Some disclose their condition; others carry the confusion silently for years, or decades.</p></div></div>
+      <div class="cope-item"><span class="cope-n">05</span><div><h4>Logistical Strategies</h4><p>Arriving early to events, choosing seats near the entrance, memorizing who will wear what — these are the invisible, automatic logistics that structure every social situation for someone who cannot rely on faces.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 05 KNOWN CASES -->
+  <section class="section" id="s-cases">
+    <div class="section-num">05</div>
+    <div class="section-wrap">
+      <p class="s-eyebrow">05 — Known Cases</p>
+      <h2 class="display">YOU MIGHT<br><em>KNOW THEM</em></h2>
+      <p class="prose" style="margin-bottom:3rem;">Prosopagnosia doesn't select for obscurity. Some of the most recognized names in culture, science, and art have lived with it — often for years before understanding what it was.</p>
+    </div>
+    <div class="cases-grid">
+      <div class="case-card"><div class="case-name">Brad Pitt</div><div class="case-role">Actor</div><p>Has spoken publicly about suspecting prosopagnosia, describing the social toll when people believe he's deliberately ignoring them after failing to recognize their face.</p></div>
+      <div class="case-card"><div class="case-name">Oliver Sacks</div><div class="case-role">Neurologist & Author</div><p>The author of <em>The Man Who Mistook His Wife for a Hat</em> had prosopagnosia himself — giving his clinical writing on perception a deeply lived, personal dimension.</p></div>
+      <div class="case-card"><div class="case-name">Jane Goodall</div><div class="case-role">Primatologist</div><p>Described a lifelong difficulty with faces — and notably found it easier to identify individual chimpanzees by their features than to recognize many humans she knew.</p></div>
+      <div class="case-card"><div class="case-name">Chuck Close</div><div class="case-role">Photorealist Painter</div><p>Had severe prosopagnosia. Some art historians argue it directly shaped his entire method — painting faces as grids of thousands of abstract color fragments, never as a whole.</p></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz-section">
+    <div id="quiz-wrap">
+      <p class="s-eyebrow">06 — Self-Assessment</p>
+      <h2 class="display" style="font-size:clamp(2.5rem,6vw,5rem); margin-bottom:1.5rem;">DO YOU<br>HAVE IT?</h2>
+      <p class="quiz-intro">This is not a clinical diagnosis. Only a qualified professional can determine that. But these questions reflect real screening criteria used in prosopagnosia research. Answer honestly — and pay attention to your gut reaction to each one.</p>
+
+      <div class="q-block" data-q="0">
+        <p class="q-text">1. You see someone you've met before in an unexpected place — your doctor at the gym, a coworker at a restaurant. How often do you fail to recognize them until they speak or introduce themselves?</p>
+        <div class="q-options">
+          <div class="q-opt" data-val="0"><span class="q-dot"></span>Rarely or never</div>
+          <div class="q-opt" data-val="1"><span class="q-dot"></span>Sometimes — once or twice</div>
+          <div class="q-opt" data-val="2"><span class="q-dot"></span>Often — it happens regularly</div>
+          <div class="q-opt" data-val="3"><span class="q-dot"></span>Almost always — context is how I recognize most people</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="1">
+        <p class="q-text">2. When watching a film or TV show with multiple characters, how often do you lose track of who is who?</p>
+        <div class="q-options">
+          <div class="q-opt" data-val="0"><span class="q-dot"></span>Never — I can easily tell characters apart</div>
+          <div class="q-opt" data-val="1"><span class="q-dot"></span>Sometimes with very large casts</div>
+          <div class="q-opt" data-val="2"><span class="q-dot"></span>Frequently — I rely on hair and clothing to track people</div>
+          <div class="q-opt" data-val="3"><span class="q-dot"></span>Almost always — it makes many films genuinely hard to follow</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="2">
+        <p class="q-text">3. How would you compare your ability to recognize faces versus recognizing voices, places, or objects?</p>
+        <div class="q-options">
+          <div class="q-opt" data-val="0"><span class="q-dot"></span>Faces are easy — I'm good at remembering people</div>
+          <div class="q-opt" data-val="1"><span class="q-dot"></span>About the same as everything else</div>
+          <div class="q-opt" data-val="2"><span class="q-dot"></span>Noticeably worse — voices are much easier than faces for me</div>
+          <div class="q-opt" data-val="3"><span class="q-dot"></span>Much worse — I rely on non-face features almost entirely</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="3">
+        <p class="q-text">4. Have you ever failed to recognize a close friend or family member after a haircut, change in context, or change in clothing?</p>
+        <div class="q-options">
+          <div class="q-opt" data-val="0"><span class="q-dot"></span>No — I always recognize people I know well</div>
+          <div class="q-opt" data-val="1"><span class="q-dot"></span>Once or twice, after very dramatic changes</div>
+          <div class="q-opt" data-val="2"><span class="q-dot"></span>Yes, more than once — even minor changes throw me off</div>
+          <div class="q-opt" data-val="3"><span class="q-dot"></span>Yes, regularly — even close people can become unrecognizable</div>
+        </div>
+      </div>
+
+      <div class="q-block" data-q="4">
+        <p class="q-text">5. When you try to picture the face of someone you know well — a parent, a close friend — how clearly can you visualize it?</p>
+        <div class="q-options">
+          <div class="q-opt" data-val="0"><span class="q-dot"></span>Very clearly — I can picture them in detail</div>
+          <div class="q-opt" data-val="1"><span class="q-dot"></span>Somewhat clearly — a general impression</div>
+          <div class="q-opt" data-val="2"><span class="q-dot"></span>Not very clearly — specific features don't stick</div>
+          <div class="q-opt" data-val="3"><span class="q-dot"></span>Barely at all — faces don't seem to stay in my memory</div>
+        </div>
+      </div>
+
+      <button id="quiz-submit">See my results</button>
+
+      <div id="quiz-result">
+        <div class="r-score" id="r-score"></div>
+        <div class="r-label" id="r-label"></div>
+        <p class="r-text" id="r-text"></p>
+        <p class="r-disclaimer">This is not a clinical diagnosis. Prosopagnosia exists on a spectrum and can only be properly assessed by a neuropsychologist using validated tests such as the Cambridge Face Memory Test. If your results suggest possible face blindness, explore resources at faceblind.org.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div id="closing">
+    <blockquote>WE ARE<br>EXTRAORDINARILY<br>GOOD AT <em>FACES.</em></blockquote>
+    <p>Prosopagnosia doesn't just reveal a deficit. It reveals an ability. The fact that face recognition can be selectively destroyed — while all other vision, memory, and intelligence remain completely intact — proves that it is a dedicated cognitive system. Not simply seeing. A specialized module, refined by millions of years of social evolution, encoded in specific neural architecture, and so automatic that most of us will never once notice it working.</p>
+    <p class="final">Until it doesn't.</p>
+  </div>
+
+  <footer>
+    <p>Sensation &amp; Perception — Interactive Final Project &nbsp;·&nbsp; <span>Prosopagnosia</span></p>
+    <p>Built with HTML, CSS &amp; JS</p>
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('.nav-link,.sci-card,.case-card,.cope-item,.q-opt,#quiz-submit,#enter-btn').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('big'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
+});
+
+// INTRO → PAGE
+const intro = document.getElementById('intro');
+const page = document.getElementById('page');
+document.getElementById('enter-btn').addEventListener('click', () => {
+  intro.classList.add('exit');
+  page.classList.add('visible');
+  setTimeout(() => intro.style.display = 'none', 2100);
+});
+
+// PROGRESS + NAV ACTIVE
+const progress = document.getElementById('progress');
+const sections = document.querySelectorAll('section[id], #closing');
+const navLinks = document.querySelectorAll('.nav-link');
+window.addEventListener('scroll', () => {
+  const total = document.body.scrollHeight - window.innerHeight;
+  progress.style.width = (window.scrollY / total * 100) + '%';
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 220) current = s.id; });
+  navLinks.forEach(l => l.classList.toggle('active', l.dataset.target === current));
+});
+navLinks.forEach(l => {
+  l.addEventListener('click', () => document.getElementById(l.dataset.target)?.scrollIntoView({ behavior: 'smooth' }));
+});
+
+// SCROLL REVEAL
+const revealEls = document.querySelectorAll('.section-wrap, .sci-grid, .cope-item, .cases-grid, #quiz-wrap, #closing');
+document.querySelectorAll('.cope-item').forEach((el, i) => el.style.transitionDelay = (i * 0.12) + 's');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+revealEls.forEach(el => obs.observe(el));
+
+// CROSSFADING BACKGROUNDS
+const bgLayers = [
+  document.getElementById('bg1'),
+  document.getElementById('bg2'),
+  document.getElementById('bg3'),
+];
+const bgScrim = document.getElementById('bg-scrim');
+
+// Map sections to background images (by index)
+// hero=none, s-what=0, s-condition=1, s-science=2, s-living=0, s-cases=1, quiz=2, closing=2
+const sectionBgMap = {
+  'hero':         null,
+  's-what':       0,
+  's-condition':  1,
+  's-science':    2,
+  's-living':     0,
+  's-cases':      1,
+  'quiz-section': 2,
+  'closing':      2,
+};
+
+let currentBg = null;
+
+function updateBackground() {
+  // Find which section we're in
+  let activeId = 'hero';
+  document.querySelectorAll('section[id], #closing').forEach(s => {
+    if (window.scrollY >= s.offsetTop - window.innerHeight * 0.4) {
+      activeId = s.id;
+    }
+  });
+
+  const bgIdx = sectionBgMap[activeId] ?? null;
+
+  if (bgIdx === currentBg) return;
+  currentBg = bgIdx;
+
+  if (bgIdx === null) {
+    // No background — hide all layers and scrim
+    bgLayers.forEach(l => l.classList.remove('active'));
+    bgScrim.classList.remove('show');
+  } else {
+    bgLayers.forEach((l, i) => l.classList.toggle('active', i === bgIdx));
+    bgScrim.classList.add('show');
+  }
+}
+
+window.addEventListener('scroll', updateBackground);
+updateBackground();
+const answers = {};
+document.querySelectorAll('.q-block').forEach((block, qi) => {
+  block.querySelectorAll('.q-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      block.querySelectorAll('.q-opt').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      answers[qi] = parseInt(opt.dataset.val);
+    });
+  });
+});
+document.getElementById('quiz-submit').addEventListener('click', () => {
+  if (Object.keys(answers).length < 5) {
+    const btn = document.getElementById('quiz-submit');
+    btn.style.borderColor = '#f4a261'; btn.style.color = '#f4a261';
+    btn.textContent = 'Please answer all 5 questions first';
+    return;
+  }
+  const score = Object.values(answers).reduce((a, b) => a + b, 0);
+  document.getElementById('r-score').textContent = score + ' / 15';
+  const label = document.getElementById('r-label');
+  const text = document.getElementById('r-text');
+  if (score <= 3) {
+    label.textContent = 'Typical face recognition';
+    text.textContent = 'Your responses suggest face recognition in the normal range. You appear to rely on faces as your primary tool for identifying people — the neurotypical pattern. Worth noting: even people without prosopagnosia vary significantly in face recognition ability.';
+  } else if (score <= 7) {
+    label.textContent = 'Mild difficulty — within normal variation';
+    text.textContent = 'Your responses suggest some difficulty with face recognition, though likely within normal variation. Many people struggle with faces in specific contexts. If this causes you regular social difficulty, it may be worth reading more about prosopagnosia.';
+  } else if (score <= 11) {
+    label.textContent = 'Moderate difficulty — possible prosopagnosia';
+    text.textContent = 'Your responses suggest meaningful difficulty with face recognition that goes beyond typical variation. This pattern is consistent with what researchers observe in prosopagnosia. Consider taking the Cambridge Face Memory Test (freely available online) and speaking with a professional if this affects your daily life.';
+  } else {
+    label.textContent = 'Significant difficulty — strongly consistent with prosopagnosia';
+    text.textContent = 'Your responses suggest pervasive, significant difficulty with face recognition across multiple situations — a pattern strongly consistent with prosopagnosia. This does not mean you definitely have it, but it warrants proper assessment. You are not alone: approximately 1 in 40 people share this experience, and most never receive a diagnosis.';
+  }
+  const result = document.getElementById('quiz-result');
+  result.style.display = 'block';
+  result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+</script>
+</body>
+</html>
