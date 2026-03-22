@@ -296,21 +296,21 @@ body {
   position: absolute;
   inset: 0;
   background-size: cover;
-  background-position: center;
+  background-position: center right;
   opacity: 0;
   transition: opacity 1.8s ease;
-  /* Invert the images: these are light bg artworks, site is dark */
-  filter: invert(1) brightness(.45) contrast(1.1);
+  filter: invert(1) brightness(.75) contrast(1.15) saturate(1.2);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.05) 10%, rgba(0,0,0,.3) 22%, rgba(0,0,0,.65) 36%, rgba(0,0,0,.9) 52%, black 68%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.05) 10%, rgba(0,0,0,.3) 22%, rgba(0,0,0,.65) 36%, rgba(0,0,0,.9) 52%, black 68%);
 }
 .bg-layer.active { opacity: 1; }
 
-/* Dark scrim over bg so text stays legible */
 #bg-scrim {
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: rgba(5,5,5,.55);
+  background: rgba(5,5,5,.28);
   opacity: 0;
   transition: opacity 1s ease;
 }
