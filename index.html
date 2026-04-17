@@ -468,7 +468,7 @@ footer span { color: var(--red); }
 
   <!-- Carlotta artwork — fades in behind the text -->
   <div id="intro-bg">
-    <img src="carlotta1.webp" alt="Artwork by Carlotta — fragmented face, features present, identity absent">
+    <img src="carlotta.webp" alt="Artwork by Carlotta — fragmented face, features present, identity absent">
   </div>
 
   <!-- Typewriter quote -->
@@ -509,7 +509,7 @@ footer span { color: var(--red); }
     <p class="hero-scroll">↓ scroll to explore</p>
   </div>
   <div class="hero-right">
-    <img src="carlotta1.webp" alt="Artwork by Carlotta — fragmented face depicting prosopagnosia">
+    <img src="carlotta.webp" alt="Artwork by Carlotta — fragmented face depicting prosopagnosia">
   </div>
 </section>
 
@@ -531,7 +531,7 @@ footer span { color: var(--red); }
     <p class="prose reveal" style="transition-delay:.25s">The world looks completely normal. Objects, places, words — all recognized without effort. It is only faces — the most socially critical visual stimulus in human existence — that fail to resolve into meaning.</p>
   </div>
   <div class="split-art">
-    <img src="carlotta1.webp" alt="Blue fragmented ink face — features scattered, identity lost">
+    <img src="carlotta.webp" alt="Blue fragmented ink face — features scattered, identity lost">
   </div>
 </section>
 
@@ -781,16 +781,31 @@ const introBg = document.getElementById('intro-bg');
 const scrollHint = document.getElementById('scroll-hint');
 const page = document.getElementById('page');
 
-const QUOTE = "\u201cThe face is a hilly landscape that I travel with my finger and transform into a two-dimensional drawing\u2026\u201d";
+const QUOTE = "“The face is a hilly landscape that I travel with my finger and transform into a two-dimensional drawing...”";
 let charIndex = 0;
-const CHAR_DELAY = 85;
 let introComplete = false;
+
+function getDelay(char, nextChar) {
+  // Natural spoken cadence
+  if (char === '…') return 0; // ellipsis handled char by char below
+  if (char === ',') return 320;    // breath at comma
+  if (char === '.') return 380;    // full stop weight
+  if (char === ' ' && nextChar && nextChar.toUpperCase() === nextChar && nextChar !== ' ') return 160; // slight pause before capitalised word
+  // Random natural variation — slightly slower on longer words
+  return 72 + (Math.random() * 30 - 15);
+}
+
+// Track ellipsis dots for individual pausing
+let dotCount = 0;
 
 function typeChar() {
   if (charIndex < QUOTE.length) {
-    typedEl.textContent += QUOTE[charIndex];
+    const char = QUOTE[charIndex];
+    typedEl.textContent += char;
     charIndex++;
-    const delay = CHAR_DELAY + (Math.random() * 18 - 9);
+
+    const delay = getDelay(char, QUOTE[charIndex]);
+
     setTimeout(typeChar, delay);
   } else {
     // 1. Attribution fades in beneath the quote
