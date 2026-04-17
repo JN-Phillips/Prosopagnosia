@@ -94,13 +94,26 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
   position: absolute; bottom: 3.5rem; left: 50%;
   transform: translateX(-50%);
   font-size: .48rem; letter-spacing: .32em; text-transform: uppercase;
-  color: rgba(236,232,225,.35);
+  color: rgba(26,26,26,.4);
   z-index: 2; opacity: 0;
   transition: opacity 1s ease;
   animation: breathe2 2.5s ease-in-out infinite;
+  white-space: nowrap;
 }
 #scroll-hint.show { opacity: 1; }
-@keyframes breathe2 { 0%,100%{opacity:.25} 50%{opacity:.6} }
+@keyframes breathe2 { 0%,100%{opacity:.2} 50%{opacity:.55} }
+
+#intro-credit {
+  position: absolute; bottom: 1.8rem; left: 50%;
+  transform: translateX(-50%);
+  font-size: .46rem; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(26,26,26,.3);
+  z-index: 2; opacity: 0;
+  transition: opacity 1s ease .6s;
+  white-space: nowrap;
+}
+#intro-bg.show ~ #intro-credit,
+#intro-credit.show { opacity: 1; }
 
 /* ══════════════════════════════════════
    PAGE
@@ -471,8 +484,9 @@ footer span { color: var(--red); }
     <p id="type-attribution">— Carlotta, diagnosed with prosopagnosia</p>
   </div>
 
-  <!-- Scroll hint -->
+  <!-- Scroll hint + credit -->
   <div id="scroll-hint">↓ scroll to enter</div>
+  <div id="intro-credit">Artwork by Carlotta, who lives with prosopagnosia</div>
 
 </div>
 
@@ -752,7 +766,7 @@ footer span { color: var(--red); }
 
 <footer>
   <p>Sensation &amp; Perception — Interactive Final Project &nbsp;·&nbsp; <span>Prosopagnosia</span></p>
-  <p>Built with HTML, CSS &amp; JS</p>
+  <p>Artwork by Carlotta, who lives with prosopagnosia. Three of her works appear throughout this site.</p>
 </footer>
 
 </div><!-- /page -->
@@ -809,6 +823,7 @@ function typeChar() {
     // 3. Scroll hint appears over the image
     setTimeout(() => {
       scrollHint.classList.add('show');
+      document.getElementById('intro-credit').classList.add('show');
       introComplete = true;
     }, 3800);
   }
