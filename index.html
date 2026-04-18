@@ -770,20 +770,25 @@ footer span { color: var(--red); }
 
 // ── BACKGROUND MUSIC
 const music = document.getElementById('bg-music');
+music.volume = 1.0;
 
-music.play().catch(() => {
-  // Autoplay blocked — unlock on first user interaction
-  const unlock = () => {
-    music.play();
-    document.removeEventListener('click', unlock);
-    document.removeEventListener('keydown', unlock);
-    document.removeEventListener('touchstart', unlock);
-    document.removeEventListener('scroll', unlock);
-  };
-  document.addEventListener('click', unlock);
-  document.addEventListener('keydown', unlock);
-  document.addEventListener('touchstart', unlock);
-  document.addEventListener('scroll', unlock);
+let musicStarted = false;
+
+function startMusic() {
+  if (musicStarted) return;
+  musicStarted = true;
+  music.play().catch(err => {
+    console.warn('Audio play failed:', err);
+  });
+}
+
+// Try immediate autoplay (works if browser allows it)
+music.play().then(() => {
+  musicStarted = true;
+}).catch(() => {
+  // Autoplay blocked — start on first interaction of any kind
+  const events = ['click', 'keydown', 'touchstart', 'pointerdown', 'scroll'];
+  events.forEach(evt => document.addEventListener(evt, startMusic, { once: true, passive: true }));
 });
 
 // ── FADE-IN QUOTE INTRO
