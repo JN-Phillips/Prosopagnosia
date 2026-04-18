@@ -771,8 +771,29 @@ footer span { color: var(--red); }
 
 </div><!-- /page -->
 
+<audio id="bg-music" loop preload="auto">
+  <source src="Symmetry.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 
+// ── BACKGROUND MUSIC
+const music = document.getElementById('bg-music');
+
+music.play().catch(() => {
+  // Autoplay blocked — unlock on first user interaction
+  const unlock = () => {
+    music.play();
+    document.removeEventListener('click', unlock);
+    document.removeEventListener('keydown', unlock);
+    document.removeEventListener('touchstart', unlock);
+    document.removeEventListener('scroll', unlock);
+  };
+  document.addEventListener('click', unlock);
+  document.addEventListener('keydown', unlock);
+  document.addEventListener('touchstart', unlock);
+  document.addEventListener('scroll', unlock);
+});
 
 // ── TYPEWRITER INTRO
 const intro = document.getElementById('intro');
