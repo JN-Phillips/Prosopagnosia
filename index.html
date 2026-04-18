@@ -22,7 +22,7 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
 
 
 /* ══════════════════════════════════════
-   TYPEWRITER INTRO
+   FADE-IN QUOTE INTRO
 ══════════════════════════════════════ */
 #intro {
   position: fixed; inset: 0; z-index: 900;
@@ -38,7 +38,7 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
 #intro-bg {
   position: absolute; inset: 0;
   opacity: 0;
-  transition: opacity 2s ease;
+  transition: opacity 2.5s ease;
   z-index: 0;
   background: #f5f2ee;
 }
@@ -51,45 +51,37 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
   filter: none;
 }
 
-/* Typewriter text — sits above image */
+/* Quote stage — centered, fades in as one block */
 #type-stage {
-  max-width: 680px; width: 100%;
+  max-width: 720px; width: 100%;
   text-align: center;
   position: relative; z-index: 2;
-  opacity: 1; transition: opacity 1s ease;
+  opacity: 0;
+  transition: opacity 3s ease;
 }
-#type-stage.fade { opacity: 0; pointer-events: none; }
+#type-stage.visible { opacity: 1; }
+#type-stage.fade { opacity: 0; transition: opacity 1.8s ease; pointer-events: none; }
 
 #typewriter-text {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.1rem, 2.8vw, 1.85rem);
+  font-size: clamp(1rem, 2.4vw, 1.6rem);
   font-style: italic;
   color: #ece8e1;
-  line-height: 1.7;
-  text-shadow: 0 2px 24px rgba(6,6,6,.8);
+  line-height: 1.85;
+  text-shadow: 0 2px 32px rgba(6,6,6,.9);
 }
-
-#type-cursor {
-  display: inline-block;
-  width: 2px; height: 1em;
-  background: var(--red);
-  margin-left: 3px;
-  vertical-align: middle;
-  animation: blink .75s step-end infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
 #type-attribution {
-  margin-top: 1.8rem;
+  margin-top: 2rem;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: .62rem; letter-spacing: .22em; text-transform: uppercase;
-  color: rgba(236,232,225,.65);
+  font-size: .58rem; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(236,232,225,.5);
   text-shadow: none;
-  opacity: 0; transition: opacity 1s ease;
+  opacity: 0; transition: opacity 1.2s ease;
 }
 #type-attribution.show { opacity: 1; }
 
-/* Scroll hint that appears after image is fully visible */
+/* Scroll hint that appears over image */
 #scroll-hint {
   position: absolute; bottom: 3.5rem; left: 50%;
   transform: translateX(-50%);
@@ -112,7 +104,6 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
   transition: opacity 1s ease .6s;
   white-space: nowrap;
 }
-#intro-bg.show ~ #intro-credit,
 #intro-credit.show { opacity: 1; }
 
 /* ══════════════════════════════════════
@@ -473,15 +464,15 @@ footer span { color: var(--red); }
 <!-- ══════ INTRO ══════ -->
 <div id="intro">
 
-  <!-- Carlotta artwork — fades in behind the text -->
+  <!-- Carlotta artwork — fades in after quote -->
   <div id="intro-bg">
-    <img src="carlotta.webp" alt="Artwork by Carlotta — fragmented face, features present, identity absent">
+    <img src="carlotta.webp" alt="Artwork by Carlotta — fragmented face depicting prosopagnosia">
   </div>
 
-  <!-- Typewriter quote -->
+  <!-- Quote — fades in as one full block -->
   <div id="type-stage">
-    <div id="typewriter-text"><span id="typed"></span><span id="type-cursor"></span></div>
-    <p id="type-attribution">— Carlotta, diagnosed with prosopagnosia</p>
+    <div id="typewriter-text">"I do not recognize myself at all anymore. I stare at the mirror when I see myself in it. I cannot understand that it is supposed to be me. I do not look at all like myself. But everyone says that they still recognize me, and that I have not really changed in my appearance:— I cannot comprehend it:— I probably will become mentally ill."</div>
+    <p id="type-attribution">— August Thienemann, 1863 — one of the earliest recorded accounts of prosopagnosia</p>
   </div>
 
   <!-- Scroll hint + credit -->
@@ -795,62 +786,43 @@ music.play().catch(() => {
   document.addEventListener('scroll', unlock);
 });
 
-// ── TYPEWRITER INTRO
-const intro = document.getElementById('intro');
-const typedEl = document.getElementById('typed');
+// ── FADE-IN QUOTE INTRO
+const intro      = document.getElementById('intro');
+const typeStage  = document.getElementById('type-stage');
 const typeAttrib = document.getElementById('type-attribution');
-const typeStage = document.getElementById('type-stage');
-const introBg = document.getElementById('intro-bg');
+const introBg    = document.getElementById('intro-bg');
 const scrollHint = document.getElementById('scroll-hint');
-const page = document.getElementById('page');
+const introCredit= document.getElementById('intro-credit');
+const page       = document.getElementById('page');
 
-const QUOTE = "“The face is a hilly landscape that I travel with my finger and transform into a two-dimensional drawing...”";
-let charIndex = 0;
 let introComplete = false;
 
-function getDelay(char, nextChar) {
-  // Natural spoken cadence
-  if (char === '…') return 0; // ellipsis handled char by char below
-  if (char === ',') return 320;    // breath at comma
-  if (char === '.') return 380;    // full stop weight
-  if (char === ' ' && nextChar && nextChar.toUpperCase() === nextChar && nextChar !== ' ') return 160; // slight pause before capitalised word
-  // Random natural variation — slightly slower on longer words
-  return 72 + (Math.random() * 30 - 15);
-}
+// Timeline:
+// 0.6s  — quote fades in (3s CSS transition)
+// 3.6s  — quote fully visible; attribution appears
+// 8.5s  — quote fades out, Carlotta image fades in (2.5s CSS transition)
+// 11.5s — scroll hint + credit appear; user can scroll
 
-// Track ellipsis dots for individual pausing
-let dotCount = 0;
+setTimeout(() => {
+  typeStage.classList.add('visible');
+}, 600);
 
-function typeChar() {
-  if (charIndex < QUOTE.length) {
-    const char = QUOTE[charIndex];
-    typedEl.textContent += char;
-    charIndex++;
+setTimeout(() => {
+  typeAttrib.classList.add('show');
+}, 3600);
 
-    const delay = getDelay(char, QUOTE[charIndex]);
+// After ample reading time, dissolve quote → image simultaneously
+setTimeout(() => {
+  typeStage.classList.remove('visible');
+  typeStage.classList.add('fade');
+  introBg.classList.add('show');
+}, 8500);
 
-    setTimeout(typeChar, delay);
-  } else {
-    // 1. Attribution fades in beneath the quote
-    setTimeout(() => typeAttrib.classList.add('show'), 500);
-
-    // 2. Everything on screen crossfades directly into the image
-    //    — quote fades out as image fades in simultaneously
-    setTimeout(() => {
-      typeStage.classList.add('fade');
-      introBg.classList.add('show');
-    }, 2000);
-
-    // 3. Scroll hint appears over the image
-    setTimeout(() => {
-      scrollHint.classList.add('show');
-      document.getElementById('intro-credit').classList.add('show');
-      introComplete = true;
-    }, 3800);
-  }
-}
-
-setTimeout(typeChar, 700);
+setTimeout(() => {
+  scrollHint.classList.add('show');
+  introCredit.classList.add('show');
+  introComplete = true;
+}, 11500);
 
 // Any scroll after intro is complete transitions into the site
 window.addEventListener('scroll', () => {
