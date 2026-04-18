@@ -455,6 +455,54 @@ footer span { color: var(--red); }
 /* scroll reveal */
 .reveal { opacity: 0; transform: translateY(36px); transition: opacity .95s ease, transform .95s ease; }
 .reveal.visible { opacity: 1; transform: none; }
+
+/* ══════════════════════════════════════
+   BRAIN MAP
+══════════════════════════════════════ */
+.bm-region { cursor: pointer; }
+.bm-region .bm-ms { transition: filter .25s, opacity .25s; }
+.bm-region:hover .bm-ms { filter: brightness(1.4); }
+.bm-region.bm-sel .bm-ms { filter: brightness(1.6); stroke-width: 2.8 !important; }
+.bm-region.bm-dim { opacity: 0.1; pointer-events: none; }
+
+@keyframes bm-pulse {
+  0%   { r: 5; opacity: 0.7; }
+  100% { r: 18; opacity: 0; }
+}
+.bm-pr { animation: bm-pulse 2.2s ease-out infinite; pointer-events: none; }
+
+/* Filter buttons styled to match site */
+.bm-btn {
+  padding: 5px 14px;
+  border: 1px solid rgba(236,232,225,.1);
+  background: transparent;
+  color: rgba(236,232,225,.35);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: .46rem; letter-spacing: .2em; text-transform: uppercase;
+  cursor: pointer; border-radius: 1px;
+  transition: all .2s;
+}
+.bm-btn:hover { color: rgba(236,232,225,.7); border-color: rgba(236,232,225,.2); }
+.bm-btn.bm-on-all  { background: rgba(236,232,225,.05); border-color: rgba(236,232,225,.22); color: var(--white); }
+.bm-btn.bm-on-acq  { background: rgba(196,119,59,.1); border-color: #c4773b; color: #e8a86a; }
+.bm-btn.bm-on-dev  { background: rgba(90,127,168,.1); border-color: #5a7fa8; color: #87aed4; }
+.bm-btn.bm-on-both { background: rgba(139,106,176,.1); border-color: #8b6ab0; color: #b89fd6; }
+
+/* Panel type accent colors */
+#bm-panel.bm-type-both { border-left-color: #8b6ab0; }
+#bm-panel.bm-type-acq  { border-left-color: #c4773b; }
+#bm-panel.bm-type-dev  { border-left-color: #5a7fa8; }
+
+#bm-typelabel.bm-both { color: #b89fd6; }
+#bm-typelabel.bm-acq  { color: #e8a86a; }
+#bm-typelabel.bm-dev  { color: #87aed4; }
+
+.bm-tag {
+  font-size: .44rem; padding: 3px 9px; letter-spacing: .1em; text-transform: uppercase;
+}
+.bm-tag.acq  { background: rgba(196,119,59,.1); color: #e8a86a; border: 1px solid rgba(196,119,59,.3); }
+.bm-tag.dev  { background: rgba(90,127,168,.1); color: #87aed4; border: 1px solid rgba(90,127,168,.3); }
+.bm-tag.both { background: rgba(139,106,176,.1); color: #b89fd6; border: 1px solid rgba(139,106,176,.3); }
 </style>
 </head>
 <body>
@@ -491,6 +539,7 @@ footer span { color: var(--red); }
     <div class="nav-link" data-target="s-neural">Neural Basis</div>
     <div class="nav-link" data-target="s-holistic">Holistic Processing</div>
     <div class="nav-link" data-target="s-forms">Two Forms</div>
+    <div class="nav-link" data-target="s-brainmap">Brain Map</div>
     <div class="nav-link" data-target="s-living">Living With It</div>
     <div class="nav-link" data-target="s-diagnosis">Diagnosis</div>
     <div class="nav-link" data-target="quiz-section">Self-Test</div>
@@ -623,11 +672,193 @@ footer span { color: var(--red); }
   </div>
 </section>
 
-<!-- ══ 05 LIVING WITH IT ══ -->
+<!-- ══ 05 BRAIN MAP ══ -->
+<section class="full-section dark" id="s-brainmap">
+  <div class="s-num">05</div>
+  <div class="full-inner">
+
+    <div class="reveal">
+      <p class="eyebrow">05 — Interactive Neural Map</p>
+      <h2 class="clinical">WHERE IT<br><em>BREAKS</em></h2>
+      <p class="prose">Face recognition is not one system. It is a distributed circuit — multiple cortical regions, each playing a distinct role, connected by white matter tracts whose integrity determines everything. In acquired prosopagnosia, identifiable lesions sever the circuit. In developmental prosopagnosia, the regions are present but poorly connected, underactivated, or subtly atrophied. Select any region to explore its function and its failure mode.</p>
+    </div>
+
+    <!-- Brain map container -->
+    <div class="reveal" id="brainmap-container" style="transition-delay:.12s; margin-top:3rem;">
+
+      <!-- Legend + filters row -->
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+        <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.4);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#8b6ab0;flex-shrink:0;"></div> Both types
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.4);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#c4773b;flex-shrink:0;"></div> Acquired
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.4);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#5a7fa8;flex-shrink:0;"></div> Developmental
+          </div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;" id="bm-filters">
+          <button class="bm-btn bm-on-all" onclick="bmFilter('all',this)">All</button>
+          <button class="bm-btn" onclick="bmFilter('acq',this)">Acquired</button>
+          <button class="bm-btn" onclick="bmFilter('dev',this)">Developmental</button>
+          <button class="bm-btn" onclick="bmFilter('both',this)">Both</button>
+        </div>
+      </div>
+
+      <!-- Brain SVG -->
+      <div style="background:rgba(255,255,255,0.012); border:1px solid rgba(236,232,225,.06); border-radius:3px; padding:.75rem .5rem; margin-bottom:1.25rem;">
+      <svg id="bm-svg" viewBox="0 0 780 430" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:780px;margin:0 auto;">
+        <defs>
+          <filter id="bm-outline-glow" x="-8%" y="-8%" width="116%" height="116%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+          <filter id="bm-sulci-glow" x="-12%" y="-12%" width="124%" height="124%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.8" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <!-- Glow outline -->
+        <path d="M130,325 C100,315 72,282 66,248 C60,214 68,178 82,152 C96,126 116,110 138,97 C160,84 184,78 208,76 C232,74 258,76 280,80 C304,84 326,92 348,96 C370,100 390,102 408,100 C434,98 458,92 478,84 C498,76 514,66 528,60 C542,54 558,52 572,58 C586,64 596,78 602,96 C608,114 608,136 600,158 C592,180 578,200 562,216 C546,232 526,244 506,254 C486,264 464,270 444,276 C424,282 406,288 388,297 C370,306 354,318 338,328 C322,338 302,344 282,338 C262,332 244,320 226,314 C208,308 178,316 130,325 Z"
+          fill="none" stroke="rgba(236,232,225,0.18)" stroke-width="3" filter="url(#bm-outline-glow)" opacity="0.5"/>
+        <!-- Main outline -->
+        <path d="M130,325 C100,315 72,282 66,248 C60,214 68,178 82,152 C96,126 116,110 138,97 C160,84 184,78 208,76 C232,74 258,76 280,80 C304,84 326,92 348,96 C370,100 390,102 408,100 C434,98 458,92 478,84 C498,76 514,66 528,60 C542,54 558,52 572,58 C586,64 596,78 602,96 C608,114 608,136 600,158 C592,180 578,200 562,216 C546,232 526,244 506,254 C486,264 464,270 444,276 C424,282 406,288 388,297 C370,306 354,318 338,328 C322,338 302,344 282,338 C262,332 244,320 226,314 C208,308 178,316 130,325 Z"
+          fill="rgba(236,232,225,0.02)" stroke="rgba(236,232,225,0.38)" stroke-width="1.5"/>
+
+        <!-- Sulci -->
+        <path d="M294,80 C288,108 280,138 272,162 C264,186 252,208 245,232" fill="none" stroke="rgba(236,232,225,0.25)" stroke-width="1" stroke-dasharray="4 3" filter="url(#bm-sulci-glow)"/>
+        <path d="M148,220 C190,210 240,207 285,212 C330,218 370,232 408,248" fill="none" stroke="rgba(236,232,225,0.25)" stroke-width="1.2" stroke-dasharray="4 4" filter="url(#bm-sulci-glow)"/>
+        <path d="M550,150 C562,170 568,194 568,218 C568,242 560,264 548,280" fill="none" stroke="rgba(236,232,225,0.2)" stroke-width="1" stroke-dasharray="3 5" filter="url(#bm-sulci-glow)"/>
+
+        <!-- Cerebellum -->
+        <ellipse cx="545" cy="328" rx="70" ry="44" fill="rgba(236,232,225,0.015)" stroke="rgba(236,232,225,0.28)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
+        <path d="M488,316 C508,326 528,332 548,332 C568,332 588,326 604,318" fill="none" stroke="rgba(236,232,225,0.18)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
+
+        <!-- Brainstem -->
+        <path d="M496,350 C504,362 508,376 506,388 C504,396 498,399 492,396 C478,392 468,378 466,365 C464,354 470,348 478,346 Z" fill="rgba(236,232,225,0.02)" stroke="rgba(236,232,225,0.24)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
+
+        <!-- Lobe labels -->
+        <text x="192" y="152" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em">FRONTAL</text>
+        <text x="400" y="138" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em">PARIETAL</text>
+        <text x="212" y="332" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em">TEMPORAL</text>
+        <text x="590" y="196" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em" transform="rotate(-72,590,196)">OCCIPITAL</text>
+
+        <!-- ── REGIONS ── -->
+
+        <!-- FFA (BOTH) -->
+        <g class="bm-region" id="bm-ffa" data-type="both" onclick="bmPick('ffa')">
+          <ellipse class="bm-ms" cx="478" cy="278" rx="55" ry="28" fill="rgba(139,106,176,0.38)" stroke="#8b6ab0" stroke-width="1.8" opacity="0.92"/>
+          <circle cx="478" cy="278" r="5" fill="#c4a8e8" opacity="0.95"/>
+          <circle class="bm-pr" cx="478" cy="278" r="5" fill="none" stroke="#8b6ab0" stroke-width="1.5"/>
+          <rect x="459" y="258" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="478" y="269" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">FFA</text>
+        </g>
+
+        <!-- OFA (BOTH) -->
+        <g class="bm-region" id="bm-ofa" data-type="both" onclick="bmPick('ofa')">
+          <ellipse class="bm-ms" cx="572" cy="250" rx="40" ry="22" fill="rgba(139,106,176,0.30)" stroke="#8b6ab0" stroke-width="1.8" opacity="0.88"/>
+          <circle cx="572" cy="250" r="4" fill="#c4a8e8" opacity="0.95"/>
+          <circle class="bm-pr" cx="572" cy="250" r="4" fill="none" stroke="#8b6ab0" stroke-width="1.5" style="animation-delay:0.5s"/>
+          <rect x="553" y="231" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="572" y="242" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">OFA</text>
+        </g>
+
+        <!-- STS (BOTH) -->
+        <g class="bm-region" id="bm-sts" data-type="both" onclick="bmPick('sts')">
+          <path class="bm-ms" d="M322,256 C360,244 404,242 440,250 C428,266 386,272 350,274 C330,270 318,264 322,256 Z" fill="rgba(139,106,176,0.26)" stroke="#8b6ab0" stroke-width="1.8" opacity="0.85"/>
+          <circle cx="382" cy="260" r="4" fill="#c4a8e8" opacity="0.9"/>
+          <circle class="bm-pr" cx="382" cy="260" r="4" fill="none" stroke="#8b6ab0" stroke-width="1.5" style="animation-delay:1.0s"/>
+          <rect x="363" y="242" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="382" y="253" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">STS</text>
+        </g>
+
+        <!-- ATL (ACQUIRED) -->
+        <g class="bm-region" id="bm-atl" data-type="acq" onclick="bmPick('atl')">
+          <ellipse class="bm-ms" cx="170" cy="264" rx="48" ry="27" fill="rgba(196,119,59,0.32)" stroke="#c4773b" stroke-width="1.8" opacity="0.92"/>
+          <circle cx="170" cy="264" r="4" fill="#e8a86a" opacity="0.95"/>
+          <circle class="bm-pr" cx="170" cy="264" r="4" fill="none" stroke="#c4773b" stroke-width="1.5" style="animation-delay:0.25s"/>
+          <rect x="151" y="245" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="170" y="256" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">ATL</text>
+        </g>
+
+        <!-- AMY (ACQUIRED) -->
+        <g class="bm-region" id="bm-amyg" data-type="acq" onclick="bmPick('amyg')">
+          <ellipse class="bm-ms" cx="370" cy="296" rx="32" ry="19" fill="rgba(196,119,59,0.30)" stroke="#c4773b" stroke-width="1.8" opacity="0.88"/>
+          <circle cx="370" cy="296" r="4" fill="#e8a86a" opacity="0.9"/>
+          <circle class="bm-pr" cx="370" cy="296" r="4" fill="none" stroke="#c4773b" stroke-width="1.5" style="animation-delay:0.75s"/>
+          <rect x="351" y="277" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="370" y="288" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">AMY</text>
+        </g>
+
+        <!-- IFG (ACQUIRED) -->
+        <g class="bm-region" id="bm-ifg" data-type="acq" onclick="bmPick('ifg')">
+          <ellipse class="bm-ms" cx="175" cy="172" rx="48" ry="26" fill="rgba(196,119,59,0.27)" stroke="#c4773b" stroke-width="1.8" opacity="0.86"/>
+          <circle cx="175" cy="172" r="4" fill="#e8a86a" opacity="0.88"/>
+          <circle class="bm-pr" cx="175" cy="172" r="4" fill="none" stroke="#c4773b" stroke-width="1.5" style="animation-delay:1.2s"/>
+          <rect x="156" y="153" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="175" y="164" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">IFG</text>
+        </g>
+
+        <!-- IPL (DEV) -->
+        <g class="bm-region" id="bm-ipl" data-type="dev" onclick="bmPick('ipl')">
+          <ellipse class="bm-ms" cx="432" cy="178" rx="50" ry="27" fill="rgba(90,127,168,0.30)" stroke="#5a7fa8" stroke-width="1.8" opacity="0.90"/>
+          <circle cx="432" cy="178" r="4" fill="#87aed4" opacity="0.92"/>
+          <circle class="bm-pr" cx="432" cy="178" r="4" fill="none" stroke="#5a7fa8" stroke-width="1.5" style="animation-delay:0.35s"/>
+          <rect x="413" y="159" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="432" y="170" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">IPL</text>
+        </g>
+
+        <!-- PREC (DEV) -->
+        <g class="bm-region" id="bm-prec" data-type="dev" onclick="bmPick('prec')">
+          <ellipse class="bm-ms" cx="508" cy="162" rx="42" ry="23" fill="rgba(90,127,168,0.26)" stroke="#5a7fa8" stroke-width="1.8" opacity="0.86"/>
+          <circle cx="508" cy="162" r="4" fill="#87aed4" opacity="0.86"/>
+          <circle class="bm-pr" cx="508" cy="162" r="4" fill="none" stroke="#5a7fa8" stroke-width="1.5" style="animation-delay:0.9s"/>
+          <rect x="484" y="143" width="48" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="508" y="154" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">PREC</text>
+        </g>
+
+        <!-- PFC (DEV) -->
+        <g class="bm-region" id="bm-pfc" data-type="dev" onclick="bmPick('pfc')">
+          <ellipse class="bm-ms" cx="118" cy="155" rx="40" ry="24" fill="rgba(90,127,168,0.26)" stroke="#5a7fa8" stroke-width="1.8" opacity="0.86"/>
+          <circle cx="118" cy="155" r="4" fill="#87aed4" opacity="0.86"/>
+          <circle class="bm-pr" cx="118" cy="155" r="4" fill="none" stroke="#5a7fa8" stroke-width="1.5" style="animation-delay:0.6s"/>
+          <rect x="99" y="136" width="38" height="15" rx="3" fill="rgba(6,6,6,0.7)"/>
+          <text x="118" y="147" font-family="'IBM Plex Mono',monospace" font-size="11" font-weight="500" fill="#ffffff" text-anchor="middle" letter-spacing="0.08em">PFC</text>
+        </g>
+
+        <!-- Axis labels -->
+        <text x="68" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.16)" letter-spacing="0.14em">← ANTERIOR</text>
+        <text x="614" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.16)" letter-spacing="0.14em">POSTERIOR →</text>
+        <text x="390" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.16)" letter-spacing="0.1em" text-anchor="middle">LATERAL VIEW — RIGHT HEMISPHERE</text>
+      </svg>
+      </div>
+
+      <!-- Info panel -->
+      <div id="bm-panel" style="border:1px solid rgba(236,232,225,.06); border-left:3px solid rgba(236,232,225,.1); background:rgba(3,3,3,0.7); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;">
+        <div id="bm-empty" style="display:flex;align-items:center;justify-content:center;height:70px;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(236,232,225,.2);">— select a region to explore —</div>
+        <div id="bm-content" style="display:none;">
+          <p id="bm-typelabel" style="font-size:.46rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:.5rem;"></p>
+          <h3 id="bm-name" style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:var(--white);margin-bottom:.3rem;"></h3>
+          <p id="bm-abbr" style="font-size:.58rem;color:rgba(236,232,225,.4);margin-bottom:.85rem;letter-spacing:.04em;"></p>
+          <p id="bm-desc" style="font-size:.78rem;line-height:1.85;color:rgba(236,232,225,.6);"></p>
+          <div id="bm-tags" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:.9rem;"></div>
+        </div>
+      </div>
+
+      <p style="text-align:center;font-size:.46rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(236,232,225,.18);margin-top:.85rem;">click any glowing region &nbsp;·&nbsp; use filters to compare types</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 06 LIVING WITH IT ══ -->
 <section class="split dark" id="s-living">
   <div class="split-text">
     <div class="reveal">
-      <p class="eyebrow">05 — Compensatory Strategies</p>
+      <p class="eyebrow">06 — Compensatory Strategies</p>
       <h2 class="emotional">How they<br><em>navigate.</em></h2>
       <p class="prose">The brain is adaptive. When the face-recognition system fails, other perceptual systems step in — rerouting social cognition through entirely different neural channels. What emerges are strategies so automatic and invisible that many people deploy them for decades without consciously knowing why.</p>
     </div>
@@ -646,10 +877,10 @@ footer span { color: var(--red); }
 
 <!-- ══ 06 DIAGNOSIS ══ -->
 <section class="full-section dark" id="s-diagnosis">
-  <div class="s-num">06</div>
+  <div class="s-num">07</div>
   <div class="full-inner">
     <div class="reveal">
-      <p class="eyebrow">06 — Diagnosis, Prevalence &amp; the Spectrum</p>
+      <p class="eyebrow">07 — Diagnosis, Prevalence &amp; the Spectrum</p>
       <h2 class="clinical">THE<br><em>SPECTRUM</em></h2>
       <p class="prose">Prosopagnosia is not binary. Face recognition ability exists on a continuous spectrum across the population — from individuals with exceptional face memory to those with profound face blindness. The clinical threshold for prosopagnosia is a matter of degree and functional impact, not a sharp categorical boundary.</p>
       <p class="prose">The standard diagnostic instrument is the <strong>Cambridge Face Memory Test (CFMT)</strong>, developed by researchers at Harvard and the University of NSW. It presents participants with faces to memorize, then tests recognition under increasingly difficult conditions. Scores two standard deviations below the population mean are considered diagnostically significant.</p>
@@ -852,7 +1083,7 @@ window.addEventListener('scroll', () => {
 navLinks.forEach(l => l.addEventListener('click', () => document.getElementById(l.dataset.target)?.scrollIntoView({ behavior:'smooth' })));
 
 // ── SCROLL REVEAL
-const revealEls = document.querySelectorAll('.reveal, .cope-item, #quiz-wrap, #closing, .sci-grid');
+const revealEls = document.querySelectorAll('.reveal, .cope-item, #quiz-wrap, #closing, .sci-grid, #brainmap-container');
 document.querySelectorAll('.cope-item').forEach((el,i) => el.style.transitionDelay = (i*.12)+'s');
 const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
@@ -953,6 +1184,126 @@ document.getElementById('quiz-submit').addEventListener('click', () => {
   result.style.display = 'block';
   result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 });
+// ── BRAIN MAP
+const BM_DATA = {
+  ffa: {
+    name: "Fusiform Face Area", abbr: "FFA — right fusiform gyrus (occipitotemporal)", type: "both",
+    typeLabel: "Affected in both acquired & developmental prosopagnosia",
+    desc: "The brain's primary face-processing hub. Responds selectively to faces over all other object categories. In acquired prosopagnosia, direct lesions here — from stroke, TBI, or encephalitis — sever the face-recognition circuit entirely. In developmental prosopagnosia, the FFA is structurally present but shows reduced activation, cortical thinning, and atypical connectivity with its upstream and downstream partners.",
+    tags: [["acquired: direct structural lesion","acq"],["developmental: hypoactivation / reduced volume","dev"],["right-lateralized","both"]]
+  },
+  ofa: {
+    name: "Occipital Face Area", abbr: "OFA — inferior occipital gyrus", type: "both",
+    typeLabel: "Affected in both acquired & developmental prosopagnosia",
+    desc: "The earliest cortical stage of face processing — detecting that something is a face and encoding its low-level feature layout before passing information forward to the FFA. Lesions here prevent face inputs from ever reaching higher recognition areas. Developmental prosopagnosia shows reduced OFA–FFA white matter tract integrity, suggesting the entire cascade is underconnected.",
+    tags: [["acquired: lesion disrupts feedforward","acq"],["developmental: reduced OFA–FFA connectivity","dev"]]
+  },
+  sts: {
+    name: "Superior Temporal Sulcus", abbr: "STS — posterior superior temporal sulcus", type: "both",
+    typeLabel: "Affected in both acquired & developmental prosopagnosia",
+    desc: "Processes the dynamic, changeable aspects of faces — gaze direction, lip movements, and emotional expressions — working alongside the FFA to build a complete social identity. Acquired damage disrupts real-time social-face reading. In developmental prosopagnosia, resting-state fMRI reveals reduced STS connectivity with the FFA and amygdala, impairing integration of identity with emotion.",
+    tags: [["acquired: expression / gaze processing lost","acq"],["developmental: network dysconnection","dev"]]
+  },
+  atl: {
+    name: "Anterior Temporal Lobe", abbr: "ATL — anterior fusiform / temporal pole", type: "acq",
+    typeLabel: "Primarily implicated in acquired prosopagnosia",
+    desc: "Stores person-specific semantic knowledge — who someone is, their name, profession, personal history. ATL damage from herpes simplex encephalitis or semantic dementia can leave face perception intact while severing the link between a recognized face and stored identity. The face may appear familiar but all identifying information is unretrievable. This dissociation is rarely seen in developmental cases.",
+    tags: [["acquired: identity retrieval failure","acq"],["herpes encephalitis","acq"],["semantic dementia","acq"]]
+  },
+  amyg: {
+    name: "Amygdala", abbr: "AMY — right amygdala (basolateral complex)", type: "acq",
+    typeLabel: "Primarily implicated in acquired prosopagnosia",
+    desc: "Tags faces with emotional significance and modulates attention toward personally familiar individuals. Bilateral amygdala lesions impair recognition of emotionally salient faces. The amygdala also mediates covert familiarity — the autonomic skin-conductance response that can survive overt recognition failure in some acquired cases, revealing that unconscious face processing sometimes persists even when explicit recognition is lost.",
+    tags: [["acquired: emotional face processing","acq"],["covert familiarity responses","acq"],["Urbach-Wiethe disease","acq"]]
+  },
+  ifg: {
+    name: "Inferior Frontal Gyrus", abbr: "IFG — pars orbitalis / pars triangularis", type: "acq",
+    typeLabel: "Primarily implicated in acquired prosopagnosia",
+    desc: "Supports top-down retrieval of face memories — actively pulling stored representations from long-term memory when a face is partially familiar. Frontal stroke disrupting IFG produces retrieval-stage prosopagnosia: patients describe a face accurately and sense familiarity, but cannot voluntarily access identity. The percept is preserved; only strategic retrieval fails.",
+    tags: [["acquired: top-down retrieval failure","acq"],["frontal stroke / TBI","acq"]]
+  },
+  ipl: {
+    name: "Inferior Parietal Lobule", abbr: "IPL — angular gyrus / supramarginal gyrus", type: "dev",
+    typeLabel: "Primarily implicated in developmental prosopagnosia",
+    desc: "Integrates face identity across viewpoints and lighting conditions, enabling view-invariant recognition. Resting-state fMRI studies of developmental prosopagnosia consistently show reduced IPL–FFA functional connectivity — a trait-level network difference suggesting a failure to achieve the holistic, stable face representations that typical perceivers form effortlessly.",
+    tags: [["developmental: resting-state hypoconnectivity","dev"],["holistic processing deficit","dev"]]
+  },
+  prec: {
+    name: "Precuneus", abbr: "PREC — medial superior parietal cortex", type: "dev",
+    typeLabel: "Primarily implicated in developmental prosopagnosia",
+    desc: "Linked to mental imagery of faces — the ability to picture a familiar person's face in the mind's eye. Developmental prosopagnosia overlaps substantially with impaired face imagery (an aphantasia-adjacent deficit). The precuneus shows reduced gray matter volume and task-based activation in DP cohorts, pointing to difficulty maintaining face representations offline — which compounds recognition failure across contexts and over time.",
+    tags: [["developmental: face imagery deficit","dev"],["aphantasia overlap","dev"],["reduced gray matter","dev"]]
+  },
+  pfc: {
+    name: "Prefrontal Cortex", abbr: "PFC — ventromedial / orbitofrontal cortex", type: "dev",
+    typeLabel: "Primarily implicated in developmental prosopagnosia",
+    desc: "Governs top-down, context-driven prediction during face recognition — using expectations, setting, and prior knowledge to prime identity retrieval. Developmental prosopagnosia shows atypical PFC–FFA connectivity at rest and during face tasks. Many DP individuals report that hearing a voice or changing context dramatically aids recognition, suggesting context-driven top-down routes are partially spared even when bottom-up face processing fails.",
+    tags: [["developmental: PFC–FFA dysconnectivity","dev"],["predictive recognition impaired","dev"],["context-cueing partially spared","dev"]]
+  }
+};
+
+let bmFilter_active = 'all';
+let bmRegion_active = null;
+
+function bmFilter(f, btn) {
+  bmFilter_active = f;
+  document.querySelectorAll('.bm-btn').forEach(b => b.className = 'bm-btn');
+  btn.className = 'bm-btn bm-on-' + f;
+  document.querySelectorAll('.bm-region').forEach(el => {
+    el.classList.toggle('bm-dim', f !== 'all' && el.dataset.type !== f);
+  });
+  if (bmRegion_active && BM_DATA[bmRegion_active].type !== f && f !== 'all') {
+    bmClear();
+    document.querySelectorAll('.bm-region').forEach(r => r.classList.remove('bm-sel'));
+    bmRegion_active = null;
+  }
+}
+
+function bmPick(id) {
+  if (bmRegion_active === id) {
+    bmClear();
+    document.getElementById('bm-' + id).classList.remove('bm-sel');
+    bmRegion_active = null;
+    return;
+  }
+  bmRegion_active = id;
+  const d = BM_DATA[id];
+  document.querySelectorAll('.bm-region').forEach(r => r.classList.remove('bm-sel'));
+  document.getElementById('bm-' + id).classList.add('bm-sel');
+
+  const panel = document.getElementById('bm-panel');
+  panel.className = '';
+  panel.setAttribute('style', 'border:1px solid rgba(236,232,225,.06); border-left:3px solid rgba(236,232,225,.1); background:rgba(3,3,3,0.7); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;');
+  panel.classList.add('bm-type-' + d.type);
+
+  const tl = document.getElementById('bm-typelabel');
+  tl.textContent = d.typeLabel;
+  tl.className = 'bm-' + d.type;
+
+  document.getElementById('bm-name').textContent = d.name;
+  document.getElementById('bm-abbr').textContent = d.abbr;
+  document.getElementById('bm-desc').textContent = d.desc;
+
+  const tagsEl = document.getElementById('bm-tags');
+  tagsEl.innerHTML = '';
+  d.tags.forEach(([text, cls]) => {
+    const s = document.createElement('span');
+    s.className = 'bm-tag ' + cls;
+    s.textContent = text;
+    tagsEl.appendChild(s);
+  });
+
+  document.getElementById('bm-empty').style.display = 'none';
+  document.getElementById('bm-content').style.display = 'block';
+}
+
+function bmClear() {
+  const panel = document.getElementById('bm-panel');
+  panel.className = '';
+  panel.setAttribute('style', 'border:1px solid rgba(236,232,225,.06); border-left:3px solid rgba(236,232,225,.1); background:rgba(3,3,3,0.7); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;');
+  document.getElementById('bm-empty').style.display = 'flex';
+  document.getElementById('bm-content').style.display = 'none';
+}
 </script>
 </body>
 </html>
