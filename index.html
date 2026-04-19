@@ -40,14 +40,14 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
   opacity: 0;
   transition: opacity 2.5s ease;
   z-index: 0;
-  background: #ffffff;
+  background: #f5f2ee;
 }
 #intro-bg.show { opacity: 1; }
 #intro-bg img {
   width: 100%; height: 100%;
   object-fit: contain;
   object-position: center center;
-  background: #f0ede8;
+  background: #f5f2ee;
   filter: none;
 }
 
@@ -164,7 +164,7 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
 
 .hero-right { position: relative; overflow: hidden; }
 .hero-right img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 65% center;
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 85% center;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 18%, rgba(0,0,0,.22) 32%, rgba(0,0,0,.55) 46%, rgba(0,0,0,.88) 62%, black 78%);
   mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 18%, rgba(0,0,0,.22) 32%, rgba(0,0,0,.55) 46%, rgba(0,0,0,.88) 62%, black 78%);
 }
