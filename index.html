@@ -12,9 +12,9 @@
   --white: #ece8e1;
   --red: #c0392b;
   --red-glow: rgba(192,57,43,.08);
-  --dim: rgba(236,232,225,.5);
-  --dimmer: rgba(236,232,225,.25);
-  --dimmest: rgba(236,232,225,.1);
+  --dim: rgba(236,232,225,.75);
+  --dimmer: rgba(236,232,225,.48);
+  --dimmest: rgba(236,232,225,.22);
 }
 html { scroll-behavior: smooth; }
 body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mono', monospace; overflow-x: hidden; }
@@ -519,38 +519,37 @@ footer span { color: var(--red); }
 }
 .bm-pr { animation: bm-pulse 2.2s ease-out infinite; pointer-events: none; }
 
-/* Filter buttons styled to match site */
-.bm-btn {
+.bm-btn { 
   padding: 5px 14px;
-  border: 1px solid rgba(236,232,225,.1);
+  border: 1px solid rgba(236,232,225,.18);
   background: transparent;
-  color: rgba(236,232,225,.35);
+  color: rgba(236,232,225,.55);
   font-family: 'IBM Plex Mono', monospace;
   font-size: .46rem; letter-spacing: .2em; text-transform: uppercase;
   cursor: pointer; border-radius: 1px;
   transition: all .2s;
 }
-.bm-btn:hover { color: rgba(236,232,225,.7); border-color: rgba(236,232,225,.2); }
-.bm-btn.bm-on-all  { background: rgba(236,232,225,.05); border-color: rgba(236,232,225,.22); color: var(--white); }
-.bm-btn.bm-on-acq  { background: rgba(196,119,59,.1); border-color: #c4773b; color: #e8a86a; }
-.bm-btn.bm-on-dev  { background: rgba(90,127,168,.1); border-color: #5a7fa8; color: #87aed4; }
-.bm-btn.bm-on-both { background: rgba(139,106,176,.1); border-color: #8b6ab0; color: #b89fd6; }
+.bm-btn:hover { color: rgba(236,232,225,.9); border-color: rgba(236,232,225,.35); }
+.bm-btn.bm-on-all  { background: rgba(236,232,225,.08); border-color: rgba(236,232,225,.35); color: var(--white); }
+.bm-btn.bm-on-acq  { background: rgba(196,119,59,.18); border-color: #d4884b; color: #f0bb80; }
+.bm-btn.bm-on-dev  { background: rgba(90,127,168,.18); border-color: #6a8fb8; color: #9ec4e8; }
+.bm-btn.bm-on-both { background: rgba(139,106,176,.18); border-color: #9b7ac0; color: #ccb2f0; }
 
 /* Panel type accent colors */
 #bm-panel.bm-type-both { border-left-color: #8b6ab0; }
 #bm-panel.bm-type-acq  { border-left-color: #c4773b; }
 #bm-panel.bm-type-dev  { border-left-color: #5a7fa8; }
 
-#bm-typelabel.bm-both { color: #b89fd6; }
-#bm-typelabel.bm-acq  { color: #e8a86a; }
-#bm-typelabel.bm-dev  { color: #87aed4; }
+#bm-typelabel.bm-both { color: #ccb2f0; }
+#bm-typelabel.bm-acq  { color: #f0bb80; }
+#bm-typelabel.bm-dev  { color: #9ec4e8; }
 
 .bm-tag {
   font-size: .44rem; padding: 3px 9px; letter-spacing: .1em; text-transform: uppercase;
 }
-.bm-tag.acq  { background: rgba(196,119,59,.1); color: #e8a86a; border: 1px solid rgba(196,119,59,.3); }
-.bm-tag.dev  { background: rgba(90,127,168,.1); color: #87aed4; border: 1px solid rgba(90,127,168,.3); }
-.bm-tag.both { background: rgba(139,106,176,.1); color: #b89fd6; border: 1px solid rgba(139,106,176,.3); }
+.bm-tag.acq  { background: rgba(196,119,59,.18); color: #f0bb80; border: 1px solid rgba(196,119,59,.45); }
+.bm-tag.dev  { background: rgba(90,127,168,.18); color: #9ec4e8; border: 1px solid rgba(90,127,168,.45); }
+.bm-tag.both { background: rgba(139,106,176,.18); color: #ccb2f0; border: 1px solid rgba(139,106,176,.45); }
 </style>
 </head>
 <body>
@@ -628,7 +627,7 @@ footer span { color: var(--red); }
     <p class="prose reveal" style="transition-delay:.25s">The world looks completely normal. Objects, places, words — all recognized without effort. It is only faces — the most socially critical visual stimulus in human existence — that fail to resolve into meaning.</p>
   </div>
   <div class="split-art">
-  <img src="spasm.webp" alt="Spasm fragmented face">
+    <img src="carlotta.webp" alt="Blue fragmented ink face — features scattered, identity lost">
   </div>
 </section>
 
@@ -738,9 +737,9 @@ footer span { color: var(--red); }
   <div class="full-inner">
 
     <div class="reveal">
-      <p class="eyebrow">05 — Interactive Neural Map</p>
-      <h2 class="clinical">WHERE IT<br><em>BREAKS</em></h2>
-      <p class="prose">Face recognition is not one system. It is a distributed circuit — multiple cortical regions, each playing a distinct role, connected by white matter tracts whose integrity determines everything. In acquired prosopagnosia, identifiable lesions sever the circuit. In developmental prosopagnosia, the regions are present but poorly connected, underactivated, or subtly atrophied. Select any region to explore its function and its failure mode.</p>
+      <p class="eyebrow">05 — Where Perception Breaks</p>
+      <h2 class="clinical">WHAT THE BRAIN<br><em>FAILS</em> TO SEE</h2>
+      <p class="prose">A face is not a collection of parts. For most people, it arrives as a single, unified perception — immediate, effortless, and charged with identity. In prosopagnosia, that fusion fails. The eyes, the nose, the mouth are all visible — but they never cohere into a person. Select any region below to explore <em>what goes missing perceptually</em> when that part of the circuit breaks.</p>
     </div>
 
     <!-- Brain map container -->
@@ -749,21 +748,21 @@ footer span { color: var(--red); }
       <!-- Legend + filters row -->
       <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
         <div style="display:flex; gap:1.5rem; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.4);">
-            <div style="width:9px;height:9px;border-radius:50%;background:#8b6ab0;flex-shrink:0;"></div> Both types
+          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.7);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#b89fd6;flex-shrink:0;box-shadow:0 0 6px rgba(184,159,214,.5);"></div> Both types
           </div>
-          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.4);">
-            <div style="width:9px;height:9px;border-radius:50%;background:#c4773b;flex-shrink:0;"></div> Acquired
+          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.7);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#e8a86a;flex-shrink:0;box-shadow:0 0 6px rgba(232,168,106,.5);"></div> After injury
           </div>
-          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.4);">
-            <div style="width:9px;height:9px;border-radius:50%;background:#5a7fa8;flex-shrink:0;"></div> Developmental
+          <div style="display:flex; align-items:center; gap:8px; font-size:.52rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.7);">
+            <div style="width:9px;height:9px;border-radius:50%;background:#87aed4;flex-shrink:0;box-shadow:0 0 6px rgba(135,174,212,.5);"></div> Born this way
           </div>
         </div>
         <div style="display:flex; gap:6px; flex-wrap:wrap;" id="bm-filters">
           <button class="bm-btn bm-on-all" onclick="bmFilter('all',this)">All</button>
-          <button class="bm-btn" onclick="bmFilter('acq',this)">Acquired</button>
-          <button class="bm-btn" onclick="bmFilter('dev',this)">Developmental</button>
-          <button class="bm-btn" onclick="bmFilter('both',this)">Both</button>
+          <button class="bm-btn" onclick="bmFilter('acq',this)">After Injury</button>
+          <button class="bm-btn" onclick="bmFilter('dev',this)">Born This Way</button>
+          <button class="bm-btn" onclick="bmFilter('both',this)">Both Types</button>
         </div>
       </div>
 
@@ -783,28 +782,28 @@ footer span { color: var(--red); }
 
         <!-- Glow outline -->
         <path d="M130,325 C100,315 72,282 66,248 C60,214 68,178 82,152 C96,126 116,110 138,97 C160,84 184,78 208,76 C232,74 258,76 280,80 C304,84 326,92 348,96 C370,100 390,102 408,100 C434,98 458,92 478,84 C498,76 514,66 528,60 C542,54 558,52 572,58 C586,64 596,78 602,96 C608,114 608,136 600,158 C592,180 578,200 562,216 C546,232 526,244 506,254 C486,264 464,270 444,276 C424,282 406,288 388,297 C370,306 354,318 338,328 C322,338 302,344 282,338 C262,332 244,320 226,314 C208,308 178,316 130,325 Z"
-          fill="none" stroke="rgba(236,232,225,0.18)" stroke-width="3" filter="url(#bm-outline-glow)" opacity="0.5"/>
+          fill="none" stroke="rgba(236,232,225,0.35)" stroke-width="3" filter="url(#bm-outline-glow)" opacity="0.7"/>
         <!-- Main outline -->
         <path d="M130,325 C100,315 72,282 66,248 C60,214 68,178 82,152 C96,126 116,110 138,97 C160,84 184,78 208,76 C232,74 258,76 280,80 C304,84 326,92 348,96 C370,100 390,102 408,100 C434,98 458,92 478,84 C498,76 514,66 528,60 C542,54 558,52 572,58 C586,64 596,78 602,96 C608,114 608,136 600,158 C592,180 578,200 562,216 C546,232 526,244 506,254 C486,264 464,270 444,276 C424,282 406,288 388,297 C370,306 354,318 338,328 C322,338 302,344 282,338 C262,332 244,320 226,314 C208,308 178,316 130,325 Z"
-          fill="rgba(236,232,225,0.02)" stroke="rgba(236,232,225,0.38)" stroke-width="1.5"/>
+          fill="rgba(236,232,225,0.03)" stroke="rgba(236,232,225,0.58)" stroke-width="1.5"/>
 
         <!-- Sulci -->
-        <path d="M294,80 C288,108 280,138 272,162 C264,186 252,208 245,232" fill="none" stroke="rgba(236,232,225,0.25)" stroke-width="1" stroke-dasharray="4 3" filter="url(#bm-sulci-glow)"/>
-        <path d="M148,220 C190,210 240,207 285,212 C330,218 370,232 408,248" fill="none" stroke="rgba(236,232,225,0.25)" stroke-width="1.2" stroke-dasharray="4 4" filter="url(#bm-sulci-glow)"/>
-        <path d="M550,150 C562,170 568,194 568,218 C568,242 560,264 548,280" fill="none" stroke="rgba(236,232,225,0.2)" stroke-width="1" stroke-dasharray="3 5" filter="url(#bm-sulci-glow)"/>
+        <path d="M294,80 C288,108 280,138 272,162 C264,186 252,208 245,232" fill="none" stroke="rgba(236,232,225,0.42)" stroke-width="1" stroke-dasharray="4 3" filter="url(#bm-sulci-glow)"/>
+        <path d="M148,220 C190,210 240,207 285,212 C330,218 370,232 408,248" fill="none" stroke="rgba(236,232,225,0.42)" stroke-width="1.2" stroke-dasharray="4 4" filter="url(#bm-sulci-glow)"/>
+        <path d="M550,150 C562,170 568,194 568,218 C568,242 560,264 548,280" fill="none" stroke="rgba(236,232,225,0.36)" stroke-width="1" stroke-dasharray="3 5" filter="url(#bm-sulci-glow)"/>
 
         <!-- Cerebellum -->
-        <ellipse cx="545" cy="328" rx="70" ry="44" fill="rgba(236,232,225,0.015)" stroke="rgba(236,232,225,0.28)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
-        <path d="M488,316 C508,326 528,332 548,332 C568,332 588,326 604,318" fill="none" stroke="rgba(236,232,225,0.18)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
+        <ellipse cx="545" cy="328" rx="70" ry="44" fill="rgba(236,232,225,0.02)" stroke="rgba(236,232,225,0.44)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
+        <path d="M488,316 C508,326 528,332 548,332 C568,332 588,326 604,318" fill="none" stroke="rgba(236,232,225,0.32)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
 
         <!-- Brainstem -->
-        <path d="M496,350 C504,362 508,376 506,388 C504,396 498,399 492,396 C478,392 468,378 466,365 C464,354 470,348 478,346 Z" fill="rgba(236,232,225,0.02)" stroke="rgba(236,232,225,0.24)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
+        <path d="M496,350 C504,362 508,376 506,388 C504,396 498,399 492,396 C478,392 468,378 466,365 C464,354 470,348 478,346 Z" fill="rgba(236,232,225,0.03)" stroke="rgba(236,232,225,0.4)" stroke-width="1" filter="url(#bm-sulci-glow)"/>
 
         <!-- Lobe labels -->
-        <text x="192" y="152" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em">FRONTAL</text>
-        <text x="400" y="138" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em">PARIETAL</text>
-        <text x="212" y="332" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em">TEMPORAL</text>
-        <text x="590" y="196" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.18)" letter-spacing="0.12em" transform="rotate(-72,590,196)">OCCIPITAL</text>
+        <text x="192" y="152" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.38)" letter-spacing="0.12em">FRONTAL</text>
+        <text x="400" y="138" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.38)" letter-spacing="0.12em">PARIETAL</text>
+        <text x="212" y="332" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.38)" letter-spacing="0.12em">TEMPORAL</text>
+        <text x="590" y="196" font-family="'IBM Plex Mono',monospace" font-size="9" fill="rgba(236,232,225,0.38)" letter-spacing="0.12em" transform="rotate(-72,590,196)">OCCIPITAL</text>
 
         <!-- ── REGIONS ── -->
 
@@ -890,25 +889,26 @@ footer span { color: var(--red); }
         </g>
 
         <!-- Axis labels -->
-        <text x="68" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.16)" letter-spacing="0.14em">← ANTERIOR</text>
-        <text x="614" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.16)" letter-spacing="0.14em">POSTERIOR →</text>
-        <text x="390" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.16)" letter-spacing="0.1em" text-anchor="middle">LATERAL VIEW — RIGHT HEMISPHERE</text>
+        <text x="68" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.35)" letter-spacing="0.14em">← ANTERIOR</text>
+        <text x="614" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.35)" letter-spacing="0.14em">POSTERIOR →</text>
+        <text x="390" y="418" font-family="'IBM Plex Mono',monospace" font-size="8" fill="rgba(236,232,225,0.35)" letter-spacing="0.1em" text-anchor="middle">LATERAL VIEW — RIGHT HEMISPHERE</text>
       </svg>
       </div>
 
       <!-- Info panel -->
-      <div id="bm-panel" style="border:1px solid rgba(236,232,225,.06); border-left:3px solid rgba(236,232,225,.1); background:rgba(3,3,3,0.7); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;">
-        <div id="bm-empty" style="display:flex;align-items:center;justify-content:center;height:70px;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(236,232,225,.2);">— select a region to explore —</div>
+      <div id="bm-panel" style="border:1px solid rgba(236,232,225,.1); border-left:3px solid rgba(236,232,225,.15); background:rgba(3,3,3,0.85); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;">
+        <div id="bm-empty" style="display:flex;align-items:center;justify-content:center;height:70px;font-size:.5rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(236,232,225,.4);">— select a glowing region to explore —</div>
         <div id="bm-content" style="display:none;">
           <p id="bm-typelabel" style="font-size:.46rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:.5rem;"></p>
           <h3 id="bm-name" style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:var(--white);margin-bottom:.3rem;"></h3>
-          <p id="bm-abbr" style="font-size:.58rem;color:rgba(236,232,225,.4);margin-bottom:.85rem;letter-spacing:.04em;"></p>
-          <p id="bm-desc" style="font-size:.78rem;line-height:1.85;color:rgba(236,232,225,.6);"></p>
-          <div id="bm-tags" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:.9rem;"></div>
+          <p id="bm-abbr" style="font-size:.58rem;color:rgba(236,232,225,.55);margin-bottom:.85rem;letter-spacing:.04em;"></p>
+          <p id="bm-desc" style="font-size:.82rem;line-height:1.9;color:rgba(236,232,225,.85);"></p>
+          <p id="bm-feels" style="font-family:'Playfair Display',serif;font-style:italic;font-size:.9rem;line-height:1.7;color:rgba(236,232,225,.6);border-left:2px solid var(--red);padding-left:1.1rem;margin-top:1.1rem;"></p>
+          <div id="bm-tags" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:1rem;"></div>
         </div>
       </div>
 
-      <p style="text-align:center;font-size:.46rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(236,232,225,.18);margin-top:.85rem;">click any glowing region &nbsp;·&nbsp; use filters to compare types</p>
+      <p style="text-align:center;font-size:.46rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(236,232,225,.35);margin-top:.85rem;">click any glowing region &nbsp;·&nbsp; use filters to compare types</p>
     </div>
 
   </div>
@@ -1466,57 +1466,66 @@ function scrollToBrainMap(regionId) {
 const BM_DATA = {
   ffa: {
     name: "Fusiform Face Area", abbr: "FFA — right fusiform gyrus (occipitotemporal)", type: "both",
-    typeLabel: "Affected in both acquired & developmental prosopagnosia",
-    desc: "The brain's primary face-processing hub. Responds selectively to faces over all other object categories. In acquired prosopagnosia, direct lesions here — from stroke, TBI, or encephalitis — sever the face-recognition circuit entirely. In developmental prosopagnosia, the FFA is structurally present but shows reduced activation, cortical thinning, and atypical connectivity with its upstream and downstream partners.",
-    tags: [["acquired: direct structural lesion","acq"],["developmental: hypoactivation / reduced volume","dev"],["right-lateralized","both"]]
+    typeLabel: "Perception breaks in both acquired & developmental prosopagnosia",
+    desc: "This is where features become a face. When the FFA functions normally, separate visual inputs — eyes, nose, mouth — fuse instantly into a single unified perception of a person. When it fails or is underactive, that fusion never happens. You may look directly at someone you have known for years and see a stranger: the parts are all visible, but they refuse to add up to anyone.",
+    feels: "\"I can see every feature clearly. I just can't make them into a face.\"",
+    tags: [["face fails to fuse into a whole","both"],["after injury: sudden loss of face-ness","acq"],["born this way: fusion never develops","dev"]]
   },
   ofa: {
     name: "Occipital Face Area", abbr: "OFA — inferior occipital gyrus", type: "both",
-    typeLabel: "Affected in both acquired & developmental prosopagnosia",
-    desc: "The earliest cortical stage of face processing — detecting that something is a face and encoding its low-level feature layout before passing information forward to the FFA. Lesions here prevent face inputs from ever reaching higher recognition areas. Developmental prosopagnosia shows reduced OFA–FFA white matter tract integrity, suggesting the entire cascade is underconnected.",
-    tags: [["acquired: lesion disrupts feedforward","acq"],["developmental: reduced OFA–FFA connectivity","dev"]]
+    typeLabel: "Perception breaks in both acquired & developmental prosopagnosia",
+    desc: "The first gate. Before a face can be recognized, the brain must register that it is looking at a face at all. The OFA handles this initial detection — extracting the spatial layout of features before passing the signal forward. When this area is damaged, a face may not even register as a face. When its connection to the FFA is weakened, the information arrives incomplete, blurred at the edges before recognition even begins.",
+    feels: "\"Faces in a crowd look like faces. But they never feel like people.\"",
+    tags: [["face detection unreliable","both"],["after injury: perception stalls at features","acq"],["born this way: weak connection to recognition areas","dev"]]
   },
   sts: {
     name: "Superior Temporal Sulcus", abbr: "STS — posterior superior temporal sulcus", type: "both",
-    typeLabel: "Affected in both acquired & developmental prosopagnosia",
-    desc: "Processes the dynamic, changeable aspects of faces — gaze direction, lip movements, and emotional expressions — working alongside the FFA to build a complete social identity. Acquired damage disrupts real-time social-face reading. In developmental prosopagnosia, resting-state fMRI reveals reduced STS connectivity with the FFA and amygdala, impairing integration of identity with emotion.",
-    tags: [["acquired: expression / gaze processing lost","acq"],["developmental: network dysconnection","dev"]]
+    typeLabel: "Perception breaks in both acquired & developmental prosopagnosia",
+    desc: "Faces are not static objects. They move — eyes shift, expressions change, lips form words. The STS reads all of this in real time, layering emotional and social meaning onto the bare perception of a face. When it fails, a face may be perceived but remain unreadable — an expressionless mask. Social cues that others absorb automatically must be consciously decoded, if they are decoded at all.",
+    feels: "\"I can see that someone is talking. I can't tell if they're angry or joking.\"",
+    tags: [["expressions feel unreadable","both"],["after injury: social-face reading lost","acq"],["born this way: emotion and identity don't connect","dev"]]
   },
   atl: {
     name: "Anterior Temporal Lobe", abbr: "ATL — anterior fusiform / temporal pole", type: "acq",
-    typeLabel: "Primarily implicated in acquired prosopagnosia",
-    desc: "Stores person-specific semantic knowledge — who someone is, their name, profession, personal history. ATL damage from herpes simplex encephalitis or semantic dementia can leave face perception intact while severing the link between a recognized face and stored identity. The face may appear familiar but all identifying information is unretrievable. This dissociation is rarely seen in developmental cases.",
-    tags: [["acquired: identity retrieval failure","acq"],["herpes encephalitis","acq"],["semantic dementia","acq"]]
+    typeLabel: "Perception breaks primarily after acquired brain injury",
+    desc: "The link between a recognized face and a known person. Even when a face is perceived clearly, something must connect it to memory — a name, a history, a relationship. ATL damage severs that link. The face may feel familiar in a vague, uncomfortable way, like a word on the tip of your tongue — but the person behind it remains permanently out of reach. The perception is intact. The meaning is gone.",
+    feels: "\"I know I know you. I just cannot reach who you are.\"",
+    tags: [["face recognized, person unretrievable","acq"],["familiarity without identity","acq"],["name and history become inaccessible","acq"]]
   },
   amyg: {
     name: "Amygdala", abbr: "AMY — right amygdala (basolateral complex)", type: "acq",
-    typeLabel: "Primarily implicated in acquired prosopagnosia",
-    desc: "Tags faces with emotional significance and modulates attention toward personally familiar individuals. Bilateral amygdala lesions impair recognition of emotionally salient faces. The amygdala also mediates covert familiarity — the autonomic skin-conductance response that can survive overt recognition failure in some acquired cases, revealing that unconscious face processing sometimes persists even when explicit recognition is lost.",
-    tags: [["acquired: emotional face processing","acq"],["covert familiarity responses","acq"],["Urbach-Wiethe disease","acq"]]
+    typeLabel: "Perception breaks primarily after acquired brain injury",
+    desc: "Not all faces feel the same. The amygdala is what makes a loved one's face register differently from a stranger's — charged, significant, pulling attention. When it is damaged, familiar faces lose their emotional weight. A spouse's face and a stranger's face produce the same flat response. More strangely, in some cases the amygdala continues to respond to familiar faces even when conscious recognition fails — a ghost of recognition that the person cannot access or name.",
+    feels: "\"My mother's face means nothing to me now. It's just a face.\"",
+    tags: [["familiar faces lose emotional charge","acq"],["covert recognition may persist unconsciously","acq"],["social salience disappears","acq"]]
   },
   ifg: {
     name: "Inferior Frontal Gyrus", abbr: "IFG — pars orbitalis / pars triangularis", type: "acq",
-    typeLabel: "Primarily implicated in acquired prosopagnosia",
-    desc: "Supports top-down retrieval of face memories — actively pulling stored representations from long-term memory when a face is partially familiar. Frontal stroke disrupting IFG produces retrieval-stage prosopagnosia: patients describe a face accurately and sense familiarity, but cannot voluntarily access identity. The percept is preserved; only strategic retrieval fails.",
-    tags: [["acquired: top-down retrieval failure","acq"],["frontal stroke / TBI","acq"]]
+    typeLabel: "Perception breaks primarily after acquired brain injury",
+    desc: "Sometimes you can sense that a face is familiar — there is something there — but the name, the context, the person simply will not come. The IFG is involved in actively pulling stored face memories into conscious recognition. When it fails, perception works but retrieval does not. You stand in front of someone, feeling certain you know them, while the identification remains just out of reach — a gap that feels disorienting and strange.",
+    feels: "\"I can tell I've seen you before. But I cannot find you anywhere in my memory.\"",
+    tags: [["familiarity without retrieval","acq"],["perception intact, identity blocked","acq"],["after frontal stroke or TBI","acq"]]
   },
   ipl: {
     name: "Inferior Parietal Lobule", abbr: "IPL — angular gyrus / supramarginal gyrus", type: "dev",
-    typeLabel: "Primarily implicated in developmental prosopagnosia",
-    desc: "Integrates face identity across viewpoints and lighting conditions, enabling view-invariant recognition. Resting-state fMRI studies of developmental prosopagnosia consistently show reduced IPL–FFA functional connectivity — a trait-level network difference suggesting a failure to achieve the holistic, stable face representations that typical perceivers form effortlessly.",
-    tags: [["developmental: resting-state hypoconnectivity","dev"],["holistic processing deficit","dev"]]
+    typeLabel: "Perception breaks primarily in developmental prosopagnosia",
+    desc: "A face you know should look the same whether it appears in bright light or shadow, from the front or at an angle, with a hat or without. For most people this is effortless. The IPL stitches face perceptions together across viewpoints, building a stable, consistent representation. When this connection is weak from birth, the same person can appear perceptually different from encounter to encounter — leaving recognition unreliable even for people seen many times.",
+    feels: "\"You look completely different with your hair up. I genuinely didn't know it was you.\"",
+    tags: [["face perception unstable across viewpoints","dev"],["same person feels unfamiliar in different contexts","dev"],["holistic face perception never fully develops","dev"]]
   },
   prec: {
     name: "Precuneus", abbr: "PREC — medial superior parietal cortex", type: "dev",
-    typeLabel: "Primarily implicated in developmental prosopagnosia",
-    desc: "Linked to mental imagery of faces — the ability to picture a familiar person's face in the mind's eye. Developmental prosopagnosia overlaps substantially with impaired face imagery (an aphantasia-adjacent deficit). The precuneus shows reduced gray matter volume and task-based activation in DP cohorts, pointing to difficulty maintaining face representations offline — which compounds recognition failure across contexts and over time.",
-    tags: [["developmental: face imagery deficit","dev"],["aphantasia overlap","dev"],["reduced gray matter","dev"]]
+    typeLabel: "Perception breaks primarily in developmental prosopagnosia",
+    desc: "Close your eyes and picture someone you love. For most people, a face forms immediately — vivid, specific, recognizable. For many with developmental prosopagnosia, nothing appears. The precuneus supports this mental imagery of faces — the ability to hold a face in the mind's eye when the person is not present. Without it, faces exist only in the moment of seeing. Offline, between encounters, there is nothing to reinforce or consolidate recognition.",
+    feels: "\"I can't picture my own mother's face when she's not in the room.\"",
+    tags: [["faces cannot be pictured mentally","dev"],["recognition doesn't persist between encounters","dev"],["overlaps with aphantasia","dev"]]
   },
   pfc: {
     name: "Prefrontal Cortex", abbr: "PFC — ventromedial / orbitofrontal cortex", type: "dev",
-    typeLabel: "Primarily implicated in developmental prosopagnosia",
-    desc: "Governs top-down, context-driven prediction during face recognition — using expectations, setting, and prior knowledge to prime identity retrieval. Developmental prosopagnosia shows atypical PFC–FFA connectivity at rest and during face tasks. Many DP individuals report that hearing a voice or changing context dramatically aids recognition, suggesting context-driven top-down routes are partially spared even when bottom-up face processing fails.",
-    tags: [["developmental: PFC–FFA dysconnectivity","dev"],["predictive recognition impaired","dev"],["context-cueing partially spared","dev"]]
+    typeLabel: "Perception breaks primarily in developmental prosopagnosia",
+    desc: "Recognition is not passive — the brain actively predicts who it expects to see based on context, voice, setting, and prior knowledge. The PFC drives this top-down process, priming the visual system before a face is even fully processed. When this connection is weak, recognition depends entirely on the face itself, with no contextual scaffolding to assist. This is why encountering someone out of their usual context — your doctor at a restaurant — can cause complete recognition failure.",
+    feels: "\"Out of context, everyone is a stranger. I need to hear your voice before I know who you are.\"",
+    tags: [["context-driven recognition fails","dev"],["out-of-context recognition collapses","dev"],["voice and setting become primary identifiers","dev"]]
   }
 };
 
@@ -1551,7 +1560,7 @@ function bmPick(id) {
 
   const panel = document.getElementById('bm-panel');
   panel.className = '';
-  panel.setAttribute('style', 'border:1px solid rgba(236,232,225,.06); border-left:3px solid rgba(236,232,225,.1); background:rgba(3,3,3,0.7); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;');
+  panel.setAttribute('style', 'border:1px solid rgba(236,232,225,.1); border-left:3px solid rgba(236,232,225,.15); background:rgba(3,3,3,0.85); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;');
   panel.classList.add('bm-type-' + d.type);
 
   const tl = document.getElementById('bm-typelabel');
@@ -1561,6 +1570,10 @@ function bmPick(id) {
   document.getElementById('bm-name').textContent = d.name;
   document.getElementById('bm-abbr').textContent = d.abbr;
   document.getElementById('bm-desc').textContent = d.desc;
+
+  const feelsEl = document.getElementById('bm-feels');
+  feelsEl.textContent = d.feels || '';
+  feelsEl.style.display = d.feels ? 'block' : 'none';
 
   const tagsEl = document.getElementById('bm-tags');
   tagsEl.innerHTML = '';
@@ -1578,9 +1591,11 @@ function bmPick(id) {
 function bmClear() {
   const panel = document.getElementById('bm-panel');
   panel.className = '';
-  panel.setAttribute('style', 'border:1px solid rgba(236,232,225,.06); border-left:3px solid rgba(236,232,225,.1); background:rgba(3,3,3,0.7); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;');
+  panel.setAttribute('style', 'border:1px solid rgba(236,232,225,.1); border-left:3px solid rgba(236,232,225,.15); background:rgba(3,3,3,0.85); padding:2rem 2.5rem; min-height:120px; transition:border-left-color .3s;');
   document.getElementById('bm-empty').style.display = 'flex';
   document.getElementById('bm-content').style.display = 'none';
+  const feelsEl = document.getElementById('bm-feels');
+  if (feelsEl) feelsEl.style.display = 'none';
 }
 </script>
 </body>
