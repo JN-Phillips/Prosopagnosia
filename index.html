@@ -26,7 +26,7 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
 ══════════════════════════════════════ */
 #intro {
   position: fixed; inset: 0; z-index: 900;
-  background: #f5f2ee;
+  background: #060606;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   transition: opacity 1s ease;
@@ -40,14 +40,14 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
   opacity: 0;
   transition: opacity 1.2s ease;
   z-index: 0;
-  background: #f5f2ee;
+  background: #f8f6f2;
 }
 #intro-bg.show { opacity: 1; }
 #intro-bg img {
   width: 100%; height: 100%;
   object-fit: contain;
   object-position: center center;
-  background: #f5f2ee;
+  background: #f8f6f2;
   filter: none;
 }
 
@@ -1404,6 +1404,9 @@ setTimeout(() => {
   typeStage.classList.remove('visible');
   typeStage.classList.add('fade');
   introBg.classList.add('show');
+  // Smoothly transition the intro background to match the artwork's background
+  intro.style.transition = 'background 1.2s ease, opacity 1s ease';
+  intro.style.background = '#f8f6f2';
 }, 8500);
 
 setTimeout(() => {
