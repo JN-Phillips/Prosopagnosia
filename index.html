@@ -36,19 +36,7 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
 
 /* Carlotta image — full screen, fades in after quote */
 #intro-bg {
-  position: absolute; inset: 0;
-  opacity: 0;
-  transition: opacity 1.2s ease;
-  z-index: 0;
-  background: #f8f6f2;
-}
-#intro-bg.show { opacity: 1; }
-#intro-bg img {
-  width: 100%; height: 100%;
-  object-fit: contain;
-  object-position: center center;
-  background: #f8f6f2;
-  filter: none;
+  display: none;
 }
 
 /* Quote stage — centered, fades in as one block */
@@ -164,7 +152,7 @@ body { background: var(--black); color: var(--white); font-family: 'IBM Plex Mon
 
 .hero-right { position: relative; overflow: hidden; }
 .hero-right img {
-  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 85% center;
+  position: absolute; inset: -8%; width: 116%; height: 116%; object-fit: contain; object-position: center center;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 18%, rgba(0,0,0,.22) 32%, rgba(0,0,0,.55) 46%, rgba(0,0,0,.88) 62%, black 78%);
   mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.04) 18%, rgba(0,0,0,.22) 32%, rgba(0,0,0,.55) 46%, rgba(0,0,0,.88) 62%, black 78%);
 }
@@ -641,43 +629,24 @@ footer span { color: var(--red); }
     </div>
 
     <div class="sci-grid reveal" style="transition-delay:.1s">
-
-      <div class="sci-card" style="background:#111;">
-        <span class="sn">01</span>
-        <h3>Fusiform Face Area</h3>
-        <p style="color:rgba(236,232,225,.75);">The perceptual computation the FFA performs is <em>holistic binding</em> — the integration of spatially distributed facial features into a single, unified percept. Rather than processing eyes, nose, and mouth as independent parts, the FFA encodes the face as a second-order configuration: the spatial relationships <em>between</em> features, not the features themselves. Evidence for this comes from the composite face effect, in which aligning the top half of one face with the bottom half of another forces holistic processing and makes the top half nearly unrecognizable in isolation — a phenomenon that disappears in prosopagnosia (Young et al., 1987). Further, direct electrical stimulation of the FFA during neurosurgery causes immediate, transient face blindness in otherwise intact patients, confirming its causal role in identity perception (Parvizi et al., 2012). In prosopagnosia, fMRI shows reduced or absent FFA activation to faces even when low-level visual responses are normal — the input arrives intact, but holistic binding fails (Kanwisher et al., 1997; Gauthier et al., 2000).</p>
-        <span class="tag brain-map-link" onclick="scrollToBrainMap('ffa')" title="View in Brain Map" style="cursor:pointer;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Kanwisher et al., 1997 <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/></svg></span>
-      </div>
-
-      <div class="sci-card" style="background:#111;">
-        <span class="sn">02</span>
-        <h3>Occipital Face Area</h3>
-        <p style="color:rgba(236,232,225,.75);">The perceptual computation the OFA performs is <em>feature geometry extraction</em> — measuring the precise spatial distances and angular relationships between facial landmarks before any identity processing begins. This is not passive detection; it is an active computation that constructs a structural template by encoding the relative positions of the eyes, nose, and mouth as a set of geometric ratios, which is then passed forward to the FFA for holistic integration. The face-specificity of this computation was demonstrated using transcranial magnetic stimulation (TMS): disrupting the OFA selectively impaired participants' ability to discriminate between individual facial parts, while leaving object and word discrimination entirely intact (Pitcher et al., 2007). In prosopagnosia, OFA dysfunction means the geometric template is never properly constructed — the FFA receives degraded input before identity processing even begins. This explains why many prosopagnosics report that faces feel "unassembled," as if features are present but not cohering into a spatial whole (Pitcher et al., 2007; Rossion et al., 2003).</p>
-        <span class="tag brain-map-link" onclick="scrollToBrainMap('ofa')" title="View in Brain Map" style="cursor:pointer;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Pitcher et al., 2007 <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/></svg></span>
+      <div class="sci-card" style="background:#111;"><span class="sn">01</span><h3>Fusiform Face Area</h3><p style="color:rgba(236,232,225,.75);">Located in the fusiform gyrus of the temporal lobe, the FFA responds preferentially to faces over all other visual stimuli. Damage or atypical development here is the primary neural basis of prosopagnosia. It is so specific that stimulating this region electrically can cause a person to suddenly fail to recognize a face they were just looking at.</p><span class="tag brain-map-link" onclick="scrollToBrainMap('ffa')" title="View in Brain Map" style="cursor:pointer;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Right hemisphere dominant <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/></svg></span></div>
+      <div class="sci-card" style="background:#111;"><span class="sn">02</span><h3>Occipital Face Area</h3><p style="color:rgba(236,232,225,.75);">The OFA, in the inferior occipital gyrus, handles the earliest stage of face processing — detecting that something is a face at all before identity processing begins. It feeds information forward to the FFA. Damage here disrupts even basic face detection.</p>
+        <span class="tag brain-map-link" onclick="scrollToBrainMap('ofa')" title="View in Brain Map" style="cursor:pointer;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Early structural encoding <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/></svg></span>
         <div class="sci-card-img" style="margin-top:1rem;border-radius:2px;overflow:hidden;border:1px solid rgba(236,232,225,.08);">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Inferior_occipital_gyrus.png/320px-Inferior_occipital_gyrus.png" alt="Inferior Occipital Gyrus — site of the Occipital Face Area" style="width:100%;height:120px;object-fit:cover;object-position:center;filter:brightness(0.9) contrast(1.05);display:block;" onerror="this.parentElement.style.display='none'">
           <p style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,232,225,.25);padding:.4rem .6rem;margin:0;">Inferior occipital gyrus — OFA</p>
         </div>
       </div>
-
-      <div class="sci-card" style="background:#111;">
-        <span class="sn">03</span>
-        <h3>The N170 Response</h3>
-        <p style="color:rgba(236,232,225,.75);">The N170 is an event-related potential (ERP) — a voltage deflection measured by EEG — that peaks approximately 170 milliseconds after a face enters the visual field. The perceptual computation it reflects is <em>categorical face detection</em>: the moment the visual system makes a binary commitment — "this is a face" — and routes the input into dedicated face-processing pipelines rather than general object recognition pathways. This is not a slow, deliberate judgment; it is an automatic perceptual gate that fires before conscious awareness. In neurotypical individuals, the N170 is larger, earlier, and right-lateralized for faces compared to any other visual category, localizing to occipitotemporal electrodes directly above the OFA and FFA (Bentin et al., 1996). In prosopagnosia, the N170 is delayed, reduced, or absent — even for faces the person consciously knows are faces. This dissociation is critical: the deficit is not in perceiving that a face is present, but in the automatic specialized machinery that should activate the instant one appears. The gate opens too slowly, or not at all (Bentin et al., 1996; Rossion et al., 2003).</p>
-        <span class="tag" style="cursor:default;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Bentin et al., 1996</span>
+      <div class="sci-card" style="background:#111;"><span class="sn">03</span><h3>The N170 Response</h3><p style="color:rgba(236,232,225,.75);">In neurotypical people, faces produce a distinctive EEG signal approximately 170 milliseconds after viewing — the N170. In prosopagnosia, this signal is delayed, reduced in amplitude, or entirely absent. This shows the deficit occurs in the very first fraction of a second of visual processing.</p>
+        <span class="tag brain-map-link" style="cursor:default;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">EEG biomarker</span>
         <div class="sci-card-img" style="margin-top:1rem;border-radius:2px;overflow:hidden;border:1px solid rgba(236,232,225,.08);">
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Eeg_cap.jpg/320px-Eeg_cap.jpg" alt="EEG cap measuring neural signals — N170 face-processing biomarker" style="width:100%;height:120px;object-fit:cover;object-position:center top;filter:brightness(0.85) contrast(1.05);display:block;" onerror="this.parentElement.style.display='none'">
           <p style="font-size:.44rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,232,225,.25);padding:.4rem .6rem;margin:0;">EEG recording — N170 signal</p>
         </div>
       </div>
-
-      <div class="sci-card" style="background:#111;">
-        <span class="sn">04</span>
-        <h3>Superior Temporal Sulcus</h3>
-        <p style="color:rgba(236,232,225,.75);">The perceptual computation the STS performs is <em>mental state inference from biological motion</em> — converting the dynamic, time-varying signals of a face into predictions about another person's attention, emotion, and intention. While the FFA extracts a stable identity from the invariant structure of a face, the STS reads what that face is <em>doing right now</em>: tracking gaze direction to infer where attention is directed, decoding muscle movement patterns to infer emotional state, and reading lip kinematics to support speech perception. Critically, this is not mere motion detection — the STS responds selectively to <em>biologically meaningful</em> motion. It fires for eye movements but not matched mechanical movements; for emotional expressions but not equivalent non-facial motion (Allison et al., 2000). In Haxby et al.'s (2000) distributed model of face perception, the STS anchors the "extended system" — the bridge between perceiving a face and understanding a person. When STS function is impaired in prosopagnosia, the face becomes socially opaque: present as a visual object, absent as a social agent (Haxby et al., 2000; Allison et al., 2000).</p>
-        <span class="tag brain-map-link" onclick="scrollToBrainMap('sts')" title="View in Brain Map" style="cursor:pointer;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Haxby et al., 2000 <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/></svg></span>
+      <div class="sci-card" style="background:#111;"><span class="sn">04</span><h3>Superior Temporal Sulcus</h3><p style="color:rgba(236,232,225,.75);">The STS processes dynamic facial information — expressions, eye movements, lip movements. It works alongside the FFA to build a complete social reading of a face. Some prosopagnosics show impaired STS function, affecting not just identity but emotional recognition.</p>
+        <span class="tag brain-map-link" onclick="scrollToBrainMap('sts')" title="View in Brain Map" style="cursor:pointer;border-color:rgba(192,57,43,.6);display:inline-flex;align-items:center;gap:6px;">Social perception <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/><polyline points='15 3 21 3 21 9'/><line x1='10' y1='14' x2='21' y2='3'/></svg></span>
       </div>
-
     </div>
   </div>
 </section>
@@ -1342,51 +1311,6 @@ footer span { color: var(--red); }
               <p class="wc-ref-source"><a class="wc-ref-link" href="https://faceblind.org.uk/living/personal-insights/" target="_blank">faceblind.org.uk/living/personal-insights</a>, 2019. — Anonymised first-person accounts published by Face Blind UK. Quoted in Brain Map (ATL) for description of identity inaccessibility.</p>
             </div>
           </div>
-
-          <div class="wc-entry">
-            <div class="wc-num">29</div>
-            <div class="wc-ref">
-              <p class="wc-ref-authors">Young, A. W., Hellawell, D., &amp; Hay, D. C.</p>
-              <p class="wc-ref-title">Configurational information in face perception</p>
-              <p class="wc-ref-source"><em>Perception</em>, 16(6), 747–759. 1987. — Source for the composite face effect cited in Neural Basis card 01 as evidence for holistic FFA processing. <a class="wc-ref-link" href="https://doi.org/10.1068/p160747" target="_blank">doi:10.1068/p160747</a></p>
-            </div>
-          </div>
-
-          <div class="wc-entry">
-            <div class="wc-num">30</div>
-            <div class="wc-ref">
-              <p class="wc-ref-authors">Parvizi, J., Jacques, C., Foster, B. L., Withoft, N., Rangarajan, V., Weiner, K. S., &amp; Grill-Spector, K.</p>
-              <p class="wc-ref-title">Electrical stimulation of human fusiform face-selective regions distorts face perception</p>
-              <p class="wc-ref-source"><em>Journal of Neuroscience</em>, 32(43), 14915–14920. 2012. — Cited in Neural Basis card 01; direct electrical stimulation of FFA causes transient prosopagnosia, confirming causal role. <a class="wc-ref-link" href="https://doi.org/10.1523/JNEUROSCI.2609-12.2012" target="_blank">doi:10.1523/JNEUROSCI.2609-12.2012</a></p>
-            </div>
-          </div>
-
-          <div class="wc-entry">
-            <div class="wc-num">31</div>
-            <div class="wc-ref">
-              <p class="wc-ref-authors">Gauthier, I., Tarr, M. J., Moylan, J., Skudlarski, P., Gore, J. C., &amp; Anderson, A. W.</p>
-              <p class="wc-ref-title">The fusiform "face area" is part of a network that processes faces at the individual level</p>
-              <p class="wc-ref-source"><em>Journal of Cognitive Neuroscience</em>, 12(3), 495–504. 2000. — Cited in Neural Basis card 01; FFA encodes individual-level face identity through holistic processing. <a class="wc-ref-link" href="https://doi.org/10.1162/089892900562165" target="_blank">doi:10.1162/089892900562165</a></p>
-            </div>
-          </div>
-
-          <div class="wc-entry">
-            <div class="wc-num">32</div>
-            <div class="wc-ref">
-              <p class="wc-ref-authors">Pitcher, D., Walsh, V., Yovel, G., &amp; Duchaine, B.</p>
-              <p class="wc-ref-title">TMS evidence for the involvement of the right occipital face area in early face processing</p>
-              <p class="wc-ref-source"><em>Current Biology</em>, 17(18), 1568–1573. 2007. — Cited in Neural Basis card 02; TMS of OFA disrupts facial feature geometry extraction specifically, not general object recognition. <a class="wc-ref-link" href="https://doi.org/10.1016/j.cub.2007.07.063" target="_blank">doi:10.1016/j.cub.2007.07.063</a></p>
-            </div>
-          </div>
-
-          <div class="wc-entry">
-            <div class="wc-num">33</div>
-            <div class="wc-ref">
-              <p class="wc-ref-authors">Allison, T., Puce, A., &amp; McCarthy, G.</p>
-              <p class="wc-ref-title">Social perception from visual cues: Role of the STS region</p>
-              <p class="wc-ref-source"><em>Trends in Cognitive Sciences</em>, 4(7), 267–278. 2000. — Cited in Neural Basis card 04; STS selectively processes biologically meaningful facial motion for mental state inference. <a class="wc-ref-link" href="https://doi.org/10.1016/S1364-6613(00)01501-1" target="_blank">doi:10.1016/S1364-6613(00)01501-1</a></p>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -1451,9 +1375,8 @@ let introComplete = false;
 
 // Timeline:
 // 0.6s  — quote fades in (3s CSS transition)
-// 3.6s  — quote fully visible; attribution appears
-// 8.5s  — quote fades out, Carlotta image fades in (2.5s CSS transition)
-// 11.5s — scroll hint + credit appear; user can scroll
+// 3.6s  — attribution appears
+// 8.5s  — quote fades out; scroll hint appears; user can scroll
 
 setTimeout(() => {
   typeStage.classList.add('visible');
@@ -1463,21 +1386,13 @@ setTimeout(() => {
   typeAttrib.classList.add('show');
 }, 3600);
 
-// After ample reading time, dissolve quote → image simultaneously
+// After reading time, fade quote out and show scroll hint directly
 setTimeout(() => {
   typeStage.classList.remove('visible');
   typeStage.classList.add('fade');
-  introBg.classList.add('show');
-  // Smoothly transition the intro background to match the artwork's background
-  intro.style.transition = 'background 1.2s ease, opacity 1s ease';
-  intro.style.background = '#f8f6f2';
-}, 8500);
-
-setTimeout(() => {
   scrollHint.classList.add('show');
-  introCredit.classList.add('show');
   introComplete = true;
-}, 11500);
+}, 8500);
 
 // Any scroll after intro is complete transitions into the site
 window.addEventListener('scroll', () => {
