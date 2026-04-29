@@ -567,7 +567,7 @@ footer span { color: var(--red); }
   <!-- Quote — fades in as one full block -->
   <div id="type-stage">
     <div id="typewriter-text">"I do not recognize myself at all anymore. I stare at the mirror when I see myself in it. I cannot understand that it is supposed to be me. I do not look at all like myself. But everyone says that they still recognize me, and that I have not really changed in my appearance:— I cannot comprehend it:— I probably will become mentally ill."</div>
-    <p id="type-attribution">— August Thienemann, 1863 — one of the earliest recorded accounts of prosopagnosia</p>
+    <p id="type-attribution">— August Thienemann, 1863 — one of the earliest recorded accounts of prosopagnosia<br><span style="font-size:.44rem;letter-spacing:.18em;opacity:.6;">Cited in Bodamer, J. (1947). Die Prosop-Agnosie. <em style="font-style:italic;">Archiv für Psychiatrie und Nervenkrankheiten</em>, 179, 6–53.</span></p>
   </div>
 
   <!-- Scroll hint + credit -->
@@ -1451,8 +1451,16 @@ let introComplete = false;
 
 // Timeline:
 // 0.6s  — quote fades in (3s CSS transition)
-// 3.6s  — quote fully visible; attribution appears
-// 5.5s  — scroll hint appears; user can scroll straight to hero
+// 3.6s  — quote fully visible; attribution + citation appear
+// 7.5s  — auto-transition to homepage (3.9s reading pause after attribution)
+
+function exitIntro() {
+  if (!intro.classList.contains('exit')) {
+    intro.classList.add('exit');
+    page.classList.add('visible');
+    setTimeout(() => { intro.style.display = 'none'; }, 2600);
+  }
+}
 
 setTimeout(() => {
   typeStage.classList.add('visible');
@@ -1462,18 +1470,12 @@ setTimeout(() => {
   typeAttrib.classList.add('show');
 }, 3600);
 
-setTimeout(() => {
-  scrollHint.classList.add('show');
-  introComplete = true;
-}, 5500);
+// Auto-advance to homepage after reading pause
+setTimeout(exitIntro, 7500);
 
-// Any scroll after intro is complete transitions into the site
-window.addEventListener('scroll', () => {
-  if (introComplete && !intro.classList.contains('exit')) {
-    intro.classList.add('exit');
-    page.classList.add('visible');
-    setTimeout(() => { intro.style.display = 'none'; }, 2600);
-  }
+// Also allow early exit on any interaction
+['click', 'keydown', 'touchstart', 'pointerdown'].forEach(evt => {
+  document.addEventListener(evt, () => { if (Date.now() > 3600) exitIntro(); }, { once: true, passive: true });
 });
 
 // ── NAV + PROGRESS
