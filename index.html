@@ -1452,8 +1452,7 @@ let introComplete = false;
 // Timeline:
 // 0.6s  — quote fades in (3s CSS transition)
 // 3.6s  — quote fully visible; attribution appears
-// 8.5s  — quote fades out, Carlotta image fades in (2.5s CSS transition)
-// 11.5s — scroll hint + credit appear; user can scroll
+// 5.5s  — scroll hint appears; user can scroll straight to hero
 
 setTimeout(() => {
   typeStage.classList.add('visible');
@@ -1463,21 +1462,10 @@ setTimeout(() => {
   typeAttrib.classList.add('show');
 }, 3600);
 
-// After ample reading time, dissolve quote → image simultaneously
-setTimeout(() => {
-  typeStage.classList.remove('visible');
-  typeStage.classList.add('fade');
-  introBg.classList.add('show');
-  // Smoothly transition the intro background to match the artwork's background
-  intro.style.transition = 'background 1.2s ease, opacity 1s ease';
-  intro.style.background = '#f8f6f2';
-}, 8500);
-
 setTimeout(() => {
   scrollHint.classList.add('show');
-  introCredit.classList.add('show');
   introComplete = true;
-}, 11500);
+}, 5500);
 
 // Any scroll after intro is complete transitions into the site
 window.addEventListener('scroll', () => {
