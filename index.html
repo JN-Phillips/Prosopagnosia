@@ -962,9 +962,22 @@ footer span { color: var(--red); }
       <p class="prose">The standard diagnostic instrument is the <strong>Cambridge Face Memory Test (CFMT)</strong>, developed by researchers at Harvard and the University of NSW. It presents participants with faces to memorize, then tests recognition under increasingly difficult conditions. Scores two standard deviations below the population mean are considered diagnostically significant. <cite class="cope-cite">(Duchaine &amp; Nakayama, 2006)</cite></p>
     </div>
 
-    <div class="pull-giant reveal" style="transition-delay:.15s; max-width:700px;">
-      "Most people with prosopagnosia have never heard the word. They have spent their lives assuming that everyone finds faces this hard to remember."
-      <cite>— Brad Duchaine, prosopagnosia researcher, Dartmouth College</cite>
+    <div style="position:relative;">
+      <div class="pull-giant reveal" style="transition-delay:.15s; max-width:700px;">
+        "Most people with prosopagnosia have never heard the word. They have spent their lives assuming that everyone finds faces this hard to remember."
+        <cite>— Brad Duchaine, prosopagnosia researcher, Dartmouth College</cite>
+      </div>
+
+      <!-- Carlotta image — floated right, blurred edges -->
+      <div style="position:absolute; top:-2rem; right:-3rem; width:340px; pointer-events:none; z-index:1;">
+        <img src="reapCarlotta_jpg.webp"
+             alt="Artwork by Carlotta, who lives with prosopagnosia"
+             style="width:100%; display:block;
+                    -webkit-mask-image: radial-gradient(ellipse 80% 85% at 55% 45%, black 30%, rgba(0,0,0,.6) 55%, transparent 80%);
+                    mask-image: radial-gradient(ellipse 80% 85% at 55% 45%, black 30%, rgba(0,0,0,.6) 55%, transparent 80%);
+                    opacity:.82;">
+        <p style="font-size:.44rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(236,232,225,.28); text-align:center; margin-top:.6rem; font-family:'IBM Plex Mono',monospace;">Carlotta — BBC, <em>Prosopagnosia: Living with Face Blindness</em></p>
+      </div>
     </div>
 
     <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1px; background:rgba(236,232,225,.05); margin-top:3rem;" class="reveal" style="transition-delay:.2s">
